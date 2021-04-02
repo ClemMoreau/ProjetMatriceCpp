@@ -2,7 +2,7 @@
 
 CParser::CParser()
 {
-	PARModifierNomFichier(NULL);
+	psPARNomFichier = NULL;
 }
 
 CParser::CParser(CParser &PARParser)
@@ -25,6 +25,7 @@ void CParser::PARModifierNomFichier(char* sNomFichier)
 	psPARNomFichier = sNomFichier;
 }
 
+template <class MType>
 CMatrice<MType> CParser::PARLireFichier()
 {
 

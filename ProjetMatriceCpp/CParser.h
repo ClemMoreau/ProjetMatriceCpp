@@ -18,7 +18,7 @@ public:
 	
 	void PARModifierNomFichier(char* sNomFichier);
 
-	CMatrice<MType> PARLireFichier();
+	template <class MType> CMatrice<MType> PARLireFichier();
 };
 
 #endif //PAR
