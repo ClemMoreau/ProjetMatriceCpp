@@ -3,10 +3,24 @@
 
 #include <iostream>
 #include "CException.h"
+#include "CMatrice.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	CMatrice<int> MATMatrice1(3,5);
+	int k = 0;
+	for (int i = 1; i < 6; i++)
+	{
+		for (int j = 1; j < 4; j++, k++)
+		{
+			MATMatrice1.MATModifierElement(i, j, k);
+		}
+	}
+
+	MATMatrice1.MATAfficherMatrice();
+
+	//CMatrice<int> MATMatricecopie(MATMatrice1);
+
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage

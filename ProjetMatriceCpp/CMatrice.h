@@ -24,7 +24,8 @@ public:
 	CMatrice<MType>();
 
 	/*********************************************************
-	Constructeur de recopie de la classe CMatrice
+	Constructeur de recopie de la classe CMatrice 
+	prenant en paramètre un CMatrice<MType> 
 	*********************************************************
 	Entrée: CMatrice<MType>& MATMatrice : la matrice à recopier
 	Nécessite:	CMatrice<MType>& MATMatrice dois être initialisé
@@ -33,6 +34,19 @@ public:
 	MATMatrice.uiMATNbColonne = 0 et MATMatrice.**ppMATMatrice = NULL
 	*********************************************************/
 	CMatrice<MType>(CMatrice<MType>& MATMatrice);
+
+	/*********************************************************
+	Constructeur de recopie de la classe CMatrice
+	prenant en paramètre le nombre de ligne et de colonne
+	de la matrice à créer
+	*********************************************************
+	Entrée: CMatrice<MType>& MATMatrice : la matrice à recopier
+	Nécessite:	CMatrice<MType>& MATMatrice dois être initialisé
+	Sortie: (rien)
+	Entraîne :	L'objet est initialisé avec uiMATNbLigne = MATMatrice.uiMATNbLigne
+	MATMatrice.uiMATNbColonne = 0 et MATMatrice.**ppMATMatrice = NULL
+	*********************************************************/
+	CMatrice<MType>(unsigned int uiNbColonne, unsigned int uiNbLigne);
 
 	/*DESTRUCTEUR*/
 
@@ -219,7 +233,24 @@ CMatrice<MType>::CMatrice()
 template <class MType>
 CMatrice<MType>::CMatrice(CMatrice<MType>& MATMatrice)
 {
+	uiMATNbColonne = MATMatrice.MATLireNombreColonne();
+	uiMATNbLigne = MATMatrice.MATLireNombreLigne();
 
+	for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+	{
+		*(ppMATMatrice + uiIndiceBoucleColonne) = new MType[uiMATNbLigne];
+	}
+}
+template <class MType>
+CMatrice<MType>::CMatrice(unsigned int uiNbColonne, unsigned int uiNbLigne)
+{
+	ppMATMatrice = new MType*[uiNbColonne];
+	for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiNbColonne; uiIndiceBoucleColonne++)
+	{
+		*(ppMATMatrice + uiIndiceBoucleColonne) = new MType[uiNbLigne];
+	}
+	uiMATNbColonne = uiNbColonne;
+	uiMATNbLigne = uiNbLigne;
 }
 
 template <class MType>
@@ -257,21 +288,52 @@ template <class MType>
 template <class MType>
 void CMatrice<MType>::MATModifierNombreLigne(unsigned int uiNbLigne)
 {
+	if (uiMATNbLigne < uiNbLigne)
+	{
+
+	}
 	uiMATNbLigne = uiNbLigne;
-	// + gérer bails allocation
 }
 
 template <class MType>
 void CMatrice<MType>::MATModifierNombreColonne(unsigned int uiNbColonne)
 {
+	/*if (uiMATNbColonne < uiNbColonne)
+	{
+		MType **tempo = NULL;
+		for (unsigned int uiBoucleNbColonne = 0; uiBoucleNbColonne < uiNbColonne; uiBoucleNbColonne++)
+		{
+			*(tempo + uiBoucleNbColonne) = new MType[uiNbColonne];
+		}
+
+		for (unsigned int uiBoucleNbColonne = 0; uiBoucleNbColonne < uiMATNbColonne; uiBoucleNbColonne++)
+		{
+			for (unsigned int uiBoucleNbLigne = 0; uiBoucleNbLigne < uiMATNbLigne; uiBoucleNbLigne++)
+			{
+				*(*(tempo + uiBoucleNbColonne) + uiBoucleNbLigne) = *(*(ppMATMatrice + uiBoucleNbColonne) + uiBoucleNbLigne);
+			}
+		}
+		for (unsigned int uiBoucleNbColonne = uiMATNbColonne; uiBoucleNbColonne < uiNbColonne; uiBoucleNbColonne++)
+		{
+			for (unsigned int uiBoucleNbLigne = 0; uiBoucleNbLigne < uiMATNbLigne; uiBoucleNbLigne++)
+			{
+				*(*(tempo + uiBoucleNbColonne) + uiBoucleNbLigne) = (MType)0 ;
+			}
+		}
+		for (unsigned int uiBoucleNbColonne = 0; uiBoucleNbColonne < uiMATNbColonne; uiBoucleNbColonne++)
+		{
+			delete *(ppMATMatrice + uiBoucleNbColonne);
+		}
+		
+		ppMATMatrice = tempo;
+	}*/
 	uiMATNbColonne = uiNbColonne;
-	// + gérer bails allocation
 }
 
 template <class MType>
 void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne, MType MTypeParam)
 {
-	*(*(ppMATMatrice + uiIndiceColonne) + uiIndiceLigne) = MTypeParam;
+	*(*(ppMATMatrice + (uiIndiceColonne - 1)) + (uiIndiceLigne - 1)) = MTypeParam;
 }
 
 template <class MType>
@@ -283,6 +345,18 @@ CMatrice<MType> CMatrice<MType>::MATTranspose()
 template <class MType>
 void CMatrice<MType>::MATAfficherMatrice()
 {
+	std::cout << "Nombre de colonne de la matrice : " << MATLireNombreColonne() << std::endl;
+	std::cout << "Nombre de ligne de la matrice : " << MATLireNombreLigne() << std::endl;
+//	std::cout << "Type de la matrice : " << MType;
+
+	for (unsigned int uiBoucleNbLigne = 0; uiBoucleNbLigne < MATLireNombreLigne(); uiBoucleNbLigne++)
+	{
+		for (unsigned int uiBoucleNbColonne = 0; uiBoucleNbColonne < MATLireNombreColonne(); uiBoucleNbColonne++)
+		{
+			std::cout << MATLireElement(uiBoucleNbLigne, uiBoucleNbColonne) << " ";
+		}
+		std::cout << std::endl;
+	}
 
 }
 
