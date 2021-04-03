@@ -235,10 +235,14 @@ CMatrice<MType>::CMatrice(CMatrice<MType>& MATMatrice)
 {
 	uiMATNbColonne = MATMatrice.MATLireNombreColonne();
 	uiMATNbLigne = MATMatrice.MATLireNombreLigne();
-
+	ppMATMatrice = new MType*[uiMATNbColonne];
 	for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
 	{
 		*(ppMATMatrice + uiIndiceBoucleColonne) = new MType[uiMATNbLigne];
+		for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiMATNbLigne; uiIndiceBoucleLigne++)
+		{
+			*(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(MATMatrice.ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
+		}
 	}
 }
 template <class MType>
@@ -424,7 +428,15 @@ void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned in
 template <class MType>
 CMatrice<MType> CMatrice<MType>::MATTranspose()
 {
-
+	CMatrice<MType> MATMatriceTranspose(*this);
+	for (unsigned int uiBoucleColonne = 0; uiBoucleColonne < uiMATNbColonne; uiBoucleColonne++)
+	{
+		for (unsigned int uiBoucleLigne = 0; uiBoucleLigne < uiMATNbLigne; uiBoucleLigne++)
+		{
+			
+		}
+	}
+	return MATMatriceTranspose;
 }
 
 template <class MType>
