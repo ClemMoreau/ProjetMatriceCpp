@@ -263,6 +263,7 @@ CMatrice<MType>::~CMatrice()
 			delete *(ppMATMatrice + uiIndiceBoucleColonne);
 		}
 	}
+	delete ppMATMatrice;
 	uiMATNbColonne = 0;
 	uiMATNbLigne = 0;
 }
@@ -288,45 +289,129 @@ template <class MType>
 template <class MType>
 void CMatrice<MType>::MATModifierNombreLigne(unsigned int uiNbLigne)
 {
-	if (uiMATNbLigne < uiNbLigne)
+	//création tempo
+	MType** ppMTypeTempo = new MType*[uiMATNbColonne];
+	for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
 	{
-
+		*(ppMTypeTempo + uiIndiceBoucleColonne) = new MType[uiNbLigne];
 	}
+
+	if (uiNbLigne > uiMATNbColonne)	//si on rajoute des lignes
+	{
+		//copie tempo
+		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		{
+			for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiMATNbLigne; uiIndiceBoucleLigne++)
+			{
+				*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
+			}
+		}
+		//initialisation nouvelles lignes
+		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		{
+			for (unsigned int uiIndiceBoucleLigne = uiMATNbLigne; uiIndiceBoucleLigne < uiNbLigne; uiIndiceBoucleLigne++)
+			{
+				*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = NULL;
+			}
+		}
+
+		//destruction ancien tableau
+		/*for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		{
+			if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
+			{
+				delete *(ppMATMatrice + uiIndiceBoucleColonne);
+			}
+		}
+		delete ppMATMatrice;*/
+	}
+	else //si on enlève des lignes
+	{
+		//copie tempo
+		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		{
+			for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiNbLigne; uiIndiceBoucleLigne++)
+			{
+				*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
+			}
+		}
+		//destruction ancien tableau
+		/*for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		{
+			if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
+			{
+				delete *(ppMATMatrice + uiIndiceBoucleColonne);
+			}
+		}
+		delete ppMATMatrice;*/
+	}
+	ppMATMatrice = ppMTypeTempo;
+	ppMTypeTempo = NULL;
 	uiMATNbLigne = uiNbLigne;
 }
 
-template <class MType>
+template <class MType>	/*revoir l'algo*/
 void CMatrice<MType>::MATModifierNombreColonne(unsigned int uiNbColonne)
 {
-	/*if (uiMATNbColonne < uiNbColonne)
+	//création tempo
+	MType** ppMTypeTempo = new MType*[uiNbColonne];
+	for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiNbColonne; uiIndiceBoucleColonne++)
 	{
-		MType **tempo = NULL;
-		for (unsigned int uiBoucleNbColonne = 0; uiBoucleNbColonne < uiNbColonne; uiBoucleNbColonne++)
+		*(ppMTypeTempo + uiIndiceBoucleColonne) = new MType[MATLireNombreLigne()];
+	}
+
+
+	if (uiNbColonne > uiMATNbColonne)	//si on rajoute des colonnes
+	{
+		//copie tempo
+		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
 		{
-			*(tempo + uiBoucleNbColonne) = new MType[uiNbColonne];
+			for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiMATNbLigne; uiIndiceBoucleLigne++)
+			{
+				*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
+			}
+		}
+		//initialisation nouvelles colonnes
+		for (unsigned int uiIndiceBoucleColonne = uiMATNbColonne; uiIndiceBoucleColonne < uiNbColonne; uiIndiceBoucleColonne++)
+		{
+			for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiMATNbLigne; uiIndiceBoucleLigne++)
+			{
+				*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = NULL;
+			}
 		}
 
-		for (unsigned int uiBoucleNbColonne = 0; uiBoucleNbColonne < uiMATNbColonne; uiBoucleNbColonne++)
+		//destruction ancien tableau
+		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
 		{
-			for (unsigned int uiBoucleNbLigne = 0; uiBoucleNbLigne < uiMATNbLigne; uiBoucleNbLigne++)
+			if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
 			{
-				*(*(tempo + uiBoucleNbColonne) + uiBoucleNbLigne) = *(*(ppMATMatrice + uiBoucleNbColonne) + uiBoucleNbLigne);
+				delete *(ppMATMatrice + uiIndiceBoucleColonne);
 			}
 		}
-		for (unsigned int uiBoucleNbColonne = uiMATNbColonne; uiBoucleNbColonne < uiNbColonne; uiBoucleNbColonne++)
+		delete ppMATMatrice;
+	}
+	else //si on enlève des colonnes
+	{
+		//copie tempo
+		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiNbColonne; uiIndiceBoucleColonne++)
 		{
-			for (unsigned int uiBoucleNbLigne = 0; uiBoucleNbLigne < uiMATNbLigne; uiBoucleNbLigne++)
+			for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiMATNbLigne; uiIndiceBoucleLigne++)
 			{
-				*(*(tempo + uiBoucleNbColonne) + uiBoucleNbLigne) = (MType)0 ;
+				*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
 			}
 		}
-		for (unsigned int uiBoucleNbColonne = 0; uiBoucleNbColonne < uiMATNbColonne; uiBoucleNbColonne++)
+		//destruction ancien tableau
+		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
 		{
-			delete *(ppMATMatrice + uiBoucleNbColonne);
+			if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
+			{
+				delete *(ppMATMatrice + uiIndiceBoucleColonne);
+			}
 		}
-		
-		ppMATMatrice = tempo;
-	}*/
+		delete ppMATMatrice;
+	}
+	ppMATMatrice = ppMTypeTempo;
+	ppMTypeTempo = NULL;
 	uiMATNbColonne = uiNbColonne;
 }
 

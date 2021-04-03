@@ -18,7 +18,16 @@ int main()
 	}
 
 	MATMatrice1.MATAfficherMatrice();
+	std::cout << std::endl << std::endl << "Modification nb Ligne" << std::endl;
 
+	MATMatrice1.MATModifierNombreColonne(4);
+	MATMatrice1.MATAfficherMatrice();
+
+	/*std::cout << std::endl << std::endl << "Modification nb Ligne" << std::endl;
+
+	MATMatrice1.MATModifierNombreLigne(6);
+	MATMatrice1.MATAfficherMatrice();
+	*/
 	//CMatrice<int> MATMatricecopie(MATMatrice1);
 
 }
