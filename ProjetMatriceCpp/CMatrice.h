@@ -241,7 +241,7 @@ CMatrice<MType>::CMatrice(CMatrice<MType>& MATMatrice)
 		*(ppMATMatrice + uiIndiceBoucleColonne) = new MType[uiMATNbLigne];
 		for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiMATNbLigne; uiIndiceBoucleLigne++)
 		{
-			*(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(MATMatrice.ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
+			MATModifierElement(uiIndiceBoucleLigne + 1, uiIndiceBoucleColonne + 1, MATMatrice.MATLireElement(uiIndiceBoucleLigne + 1, uiIndiceBoucleColonne + 1));
 		}
 	}
 }
@@ -286,8 +286,8 @@ unsigned int CMatrice<MType>::MATLireNombreColonne()
 
 template <class MType>
  MType CMatrice<MType>::MATLireElement(unsigned int uiIndiceLigne, unsigned int uiIndiceColonne)
-{
-	 return *(*(ppMATMatrice + uiIndiceColonne) + uiIndiceLigne);
+{ 
+	 return *(*(ppMATMatrice + (uiIndiceColonne - 1)) + (uiIndiceLigne - 1));
 }
 
 template <class MType>
@@ -450,7 +450,7 @@ void CMatrice<MType>::MATAfficherMatrice()
 	{
 		for (unsigned int uiBoucleNbColonne = 0; uiBoucleNbColonne < MATLireNombreColonne(); uiBoucleNbColonne++)
 		{
-			std::cout << MATLireElement(uiBoucleNbLigne, uiBoucleNbColonne) << " ";
+			std::cout << MATLireElement(uiBoucleNbLigne + 1, uiBoucleNbColonne + 1) << " ";
 		}
 		std::cout << std::endl;
 	}
