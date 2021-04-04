@@ -9,7 +9,6 @@ private:
 	unsigned int uiMATNbColonne;
 	MType **ppMATMatrice;		//maybe créer une sous classe cellule
 public:
-
 	/*CONSTRUCTEURS*/
 
 	/*********************************************************
@@ -141,7 +140,7 @@ public:
 	Sortie: CMatrice<MType> : la tranposé de la matrice
 	Entraîne : (rien)
 	*********************************************************/
-	CMatrice<MType> MATTranspose();
+	CMatrice<MType>& MATTranspose();
 
 	/*********************************************************
 	Affiche la matrice dans la console
@@ -300,7 +299,7 @@ void CMatrice<MType>::MATModifierNombreLigne(unsigned int uiNbLigne)
 		*(ppMTypeTempo + uiIndiceBoucleColonne) = new MType[uiNbLigne];
 	}
 
-	if (uiNbLigne > uiMATNbColonne)	//si on rajoute des lignes
+	if (uiNbLigne > uiMATNbLigne)	//si on rajoute des lignes
 	{
 		//copie tempo
 		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
@@ -320,14 +319,14 @@ void CMatrice<MType>::MATModifierNombreLigne(unsigned int uiNbLigne)
 		}
 
 		//destruction ancien tableau
-		/*for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
 		{
 			if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
 			{
 				delete *(ppMATMatrice + uiIndiceBoucleColonne);
 			}
 		}
-		delete ppMATMatrice;*/
+		delete ppMATMatrice;
 	}
 	else //si on enlève des lignes
 	{
@@ -340,14 +339,14 @@ void CMatrice<MType>::MATModifierNombreLigne(unsigned int uiNbLigne)
 			}
 		}
 		//destruction ancien tableau
-		/*for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
 		{
 			if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
 			{
 				delete *(ppMATMatrice + uiIndiceBoucleColonne);
 			}
 		}
-		delete ppMATMatrice;*/
+		delete ppMATMatrice;
 	}
 	ppMATMatrice = ppMTypeTempo;
 	ppMTypeTempo = NULL;
@@ -426,17 +425,17 @@ void CMatrice<MType>::MATModifierElement(unsigned int uiIndiceLigne, unsigned in
 }
 
 template <class MType>
-CMatrice<MType> CMatrice<MType>::MATTranspose()
+CMatrice<MType>& CMatrice<MType>::MATTranspose()
 {
-	CMatrice<MType> MATMatriceTranspose(*this);
+	CMatrice<MType>* pMATMatriceTranspose = new CMatrice<MType>(*this);
 	for (unsigned int uiBoucleColonne = 0; uiBoucleColonne < uiMATNbColonne; uiBoucleColonne++)
 	{
 		for (unsigned int uiBoucleLigne = 0; uiBoucleLigne < uiMATNbLigne; uiBoucleLigne++)
 		{
-			
+			pMATMatriceTranspose->MATModifierElement(uiBoucleLigne + 1,  uiBoucleColonne + 1, MATLireElement(uiBoucleColonne + 1, uiBoucleLigne + 1));
 		}
 	}
-	return MATMatriceTranspose;
+	return *pMATMatriceTranspose;
 }
 
 template <class MType>
@@ -444,15 +443,15 @@ void CMatrice<MType>::MATAfficherMatrice()
 {
 	std::cout << "Nombre de colonne de la matrice : " << MATLireNombreColonne() << std::endl;
 	std::cout << "Nombre de ligne de la matrice : " << MATLireNombreLigne() << std::endl;
-//	std::cout << "Type de la matrice : " << MType;
 
 	for (unsigned int uiBoucleNbLigne = 0; uiBoucleNbLigne < MATLireNombreLigne(); uiBoucleNbLigne++)
 	{
+		std::cout << "| ";
 		for (unsigned int uiBoucleNbColonne = 0; uiBoucleNbColonne < MATLireNombreColonne(); uiBoucleNbColonne++)
 		{
 			std::cout << MATLireElement(uiBoucleNbLigne + 1, uiBoucleNbColonne + 1) << " ";
 		}
-		std::cout << std::endl;
+		std::cout << "|" << std::endl;
 	}
 
 }
@@ -460,13 +459,29 @@ void CMatrice<MType>::MATAfficherMatrice()
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator+(CMatrice<MType>& MATMatrice)
 {
-
+	CMatrice<MType>* pMATMatriceProduitSomme = new CMatrice<MType>(*this);
+	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbColonne; uiBoucleColonne++)
+	{
+		for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbLigne; uiBoucleLigne++)
+		{
+			pMATMatriceProduitSomme->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MATLireElement(uiBoucleLigne, uiBoucleColonne) + MATMatrice.MATLireElement(uiBoucleLigne, uiBoucleColonne));
+		}
+	}
+	return *pMATMatriceProduitSomme;
 }
 
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator-(CMatrice<MType>& MATMatrice)
 {
-
+	CMatrice<MType>* pMATMatriceProduitDiff = new CMatrice<MType>(*this);
+	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbColonne; uiBoucleColonne++)
+	{
+		for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbLigne; uiBoucleLigne++)
+		{
+			pMATMatriceProduitDiff->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MATLireElement(uiBoucleLigne, uiBoucleColonne) - MATMatrice.MATLireElement(uiBoucleLigne, uiBoucleColonne));
+		}
+	}
+	return *pMATMatriceProduitDiff;
 }
 
 template <class MType>
@@ -484,12 +499,29 @@ CMatrice<MType>& CMatrice<MType>::operator/(CMatrice<MType>& MATMatrice)
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator*(MType MTypeParam)
 {
-
+	CMatrice<MType>* pMATMatriceProduitCoeff = new CMatrice<MType>(*this);
+	for (unsigned int uiBoucleColonne = 0; uiBoucleColonne < uiMATNbColonne; uiBoucleColonne++)
+	{
+		for (unsigned int uiBoucleLigne = 0; uiBoucleLigne < uiMATNbLigne; uiBoucleLigne++)
+		{
+			pMATMatriceProduitCoeff->MATModifierElement(uiBoucleLigne + 1, uiBoucleColonne + 1, MTypeParam * MATLireElement(uiBoucleLigne + 1, uiBoucleColonne + 1));
+		}
+	}
+	return *pMATMatriceProduitCoeff;
 }
 
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator/(MType MTypeParam)
 {
-
+	CMatrice<MType>* pMATMatriceProduitCoeff = new CMatrice<MType>(*this);
+	for (unsigned int uiBoucleColonne = 0; uiBoucleColonne < uiMATNbColonne; uiBoucleColonne++)
+	{
+		for (unsigned int uiBoucleLigne = 0; uiBoucleLigne < uiMATNbLigne; uiBoucleLigne++)
+		{
+			pMATMatriceProduitCoeff->MATModifierElement(uiBoucleLigne + 1, uiBoucleColonne + 1, MATLireElement(uiBoucleLigne + 1, uiBoucleColonne + 1) / MTypeParam);
+		}
+	}
+	return *pMATMatriceProduitCoeff;
 }
+
 #endif //MAT

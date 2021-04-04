@@ -4,18 +4,20 @@
 
 int main()
 {
-	CMatrice<int> MATMatrice1(3,3);
-	int k = 1;
+	CMatrice<float> MATMatrice1(5, 5);
+	float k = 1.0;
 	for (unsigned int i = 1; i <= MATMatrice1.MATLireNombreLigne(); i++)
 	{
-		for (unsigned int j = 1; j <= MATMatrice1.MATLireNombreColonne(); j++, k++)
+		for (unsigned int j = 1; j <= MATMatrice1.MATLireNombreColonne(); j++)
 		{
 			MATMatrice1.MATModifierElement(i, j, k);
 		}
 	}
+
 	MATMatrice1.MATAfficherMatrice();
 	std::cout << std::endl << std::endl;
-	CMatrice<int> MATMatrice2(MATMatrice1);
-	MATMatrice2.MATAfficherMatrice();
 
+	CMatrice<float> MATsomme = MATMatrice1 - MATMatrice1;
+	MATsomme.MATAfficherMatrice();
+	std::cout << std::endl << std::endl;
 }
