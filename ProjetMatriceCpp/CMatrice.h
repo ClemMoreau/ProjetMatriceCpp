@@ -459,35 +459,48 @@ void CMatrice<MType>::MATAfficherMatrice()
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator+(CMatrice<MType>& MATMatrice)
 {
-	CMatrice<MType>* pMATMatriceProduitSomme = new CMatrice<MType>(*this);
+	CMatrice<MType>* pMATMatriceSomme = new CMatrice<MType>(*this);
 	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbColonne; uiBoucleColonne++)
 	{
 		for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbLigne; uiBoucleLigne++)
 		{
-			pMATMatriceProduitSomme->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MATLireElement(uiBoucleLigne, uiBoucleColonne) + MATMatrice.MATLireElement(uiBoucleLigne, uiBoucleColonne));
+			pMATMatriceSomme->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MATLireElement(uiBoucleLigne, uiBoucleColonne) + MATMatrice.MATLireElement(uiBoucleLigne, uiBoucleColonne));
 		}
 	}
-	return *pMATMatriceProduitSomme;
+	return *pMATMatriceSomme;
 }
 
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator-(CMatrice<MType>& MATMatrice)
 {
-	CMatrice<MType>* pMATMatriceProduitDiff = new CMatrice<MType>(*this);
+	CMatrice<MType>* pMATMatriceDiff = new CMatrice<MType>(*this);
 	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbColonne; uiBoucleColonne++)
 	{
 		for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbLigne; uiBoucleLigne++)
 		{
-			pMATMatriceProduitDiff->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MATLireElement(uiBoucleLigne, uiBoucleColonne) - MATMatrice.MATLireElement(uiBoucleLigne, uiBoucleColonne));
+			pMATMatriceDiff->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MATLireElement(uiBoucleLigne, uiBoucleColonne) - MATMatrice.MATLireElement(uiBoucleLigne, uiBoucleColonne));
 		}
 	}
-	return *pMATMatriceProduitDiff;
+	return *pMATMatriceDiff;
 }
 
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType>& MATMatrice)
 {
-
+	CMatrice<MType>* pMATMatriceProduit = new CMatrice<MType>(*this);
+	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbColonne; uiBoucleColonne++)
+	{
+		for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbLigne; uiBoucleLigne++)
+		{
+			MType MTypeSomme = 0;
+			for (unsigned int uiBoucleProduit = 1; uiBoucleProduit <= uiMATNbColonne; uiBoucleProduit++)
+			{
+				MTypeSomme = MTypeSomme + MATLireElement(uiBoucleLigne, uiBoucleProduit) * MATMatrice.MATLireElement(uiBoucleProduit, uiBoucleColonne);
+			}
+			pMATMatriceProduit->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MTypeSomme);
+		}
+	}
+	return *pMATMatriceProduit;
 }
 
 template <class MType>
