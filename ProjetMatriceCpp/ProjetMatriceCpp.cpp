@@ -4,29 +4,16 @@
 
 int main()
 {
-	CMatrice<float> MATMatrice(2, 2);
-	float k = 1.0;
-	for (unsigned int i = 1; i <= MATMatrice.MATLireNombreLigne(); i++)
-	{
-		for (unsigned int j = 1; j <= MATMatrice.MATLireNombreColonne(); j++, k++)
-		{
-			MATMatrice.MATModifierElement(i, j, k);
-		}
-	}
-	MATMatrice.MATAfficherMatrice();
-	std::cout << std::endl << std::endl;
+	CMatrice<char> Mat(3,2);
+	Mat.MATModifierElement(1, 1, 1);
+	Mat.MATModifierElement(1, 2, 2);
+	Mat.MATModifierElement(2, 1, 3);
+	Mat.MATModifierElement(2, 2, 4);
+	Mat.MATModifierElement(3, 1, 5);
+	Mat.MATModifierElement(3, 2, 6);
+	Mat.MATAfficherMatrice();
 
-	CMatrice<float> MATMatrice1(2, 2);
+	CMatrice<char> MatTrans = Mat.MATTranspose();
+	MatTrans.MATAfficherMatrice();
 
-	MATMatrice1.MATModifierElement(1, 1, 1);
-	MATMatrice1.MATModifierElement(1, 2, 0);
-	MATMatrice1.MATModifierElement(2, 1, 0);
-	MATMatrice1.MATModifierElement(2, 2, 1);
-
-	MATMatrice1.MATAfficherMatrice();
-	std::cout << std::endl << std::endl;
-
-	CMatrice<float> MATProd = MATMatrice * MATMatrice;
-	MATProd.MATAfficherMatrice();
-	std::cout << std::endl << std::endl;
 }
