@@ -1,6 +1,8 @@
 #ifndef EXC
 #define EXC 0
 
+#define valeur_negative 100
+
 class CException
 {
 private:
@@ -52,7 +54,7 @@ public:
 	Sortie: (rien)
 	Entraîne :	this.uiEXCValeur = uiValeur
 	*********************************************************/
-	void EXCmodifier_valeur(unsigned int uiValeur);
+	void EXCmodifier_valeur(int uiValeur);
 
 	/*GETTER*/
 

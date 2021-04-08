@@ -24,6 +24,12 @@ Entraîne :	L'objet est initialisé avec this.uiEXCValeur = EXCobjet.uiEXCValeur
 *********************************************************/
 CException::CException(CException& EXCobjet)
 {
+	if (EXCobjet.EXClire_valeur() < 0)
+	{
+		CException EXCObjet;
+		EXCObjet.EXCmodifier_valeur(valeur_negative);
+		throw(EXCObjet);
+	}
 	EXCmodifier_valeur(EXCobjet.EXClire_valeur());
 }
 
@@ -48,8 +54,14 @@ Nécessite:	uiValeur > 0
 Sortie: (rien)
 Entraîne :	this.uiEXCValeur = uiValeur
 *********************************************************/
-void CException::EXCmodifier_valeur(unsigned int uiValeur)
+void CException::EXCmodifier_valeur(int uiValeur)
 {
+	if (uiValeur < 0)
+	{
+		CException EXCObjet;
+		EXCObjet.EXCmodifier_valeur(valeur_negative);
+		throw(EXCObjet);
+	}
 	uiEXCvaleur = uiValeur;
 }
 

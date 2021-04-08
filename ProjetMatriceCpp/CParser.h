@@ -66,7 +66,7 @@ CParser::~CParser()
 }
 
 
-CParser::PARLireNomFichier()
+void CParser::PARLireNomFichier()
 {
 	if (psPARNomFichier == NULL)
 	{
@@ -79,7 +79,7 @@ CParser::PARLireNomFichier()
 }
 
 
-CParser::PARModifierNomFichier(char* sNomFichier)
+void CParser::PARModifierNomFichier(char* sNomFichier)
 {
 
 }
