@@ -53,7 +53,7 @@ public:
 	template <class MType> CMatrice<MType> PARLireFichier();
 };
 
-
+/*
 CParser::CParser()
 {
 	psPARNomFichier = NULL;
@@ -66,15 +66,16 @@ CParser::~CParser()
 }
 
 
-void CParser::PARLireNomFichier()
+char* CParser::PARLireNomFichier()
 {
 	if (psPARNomFichier == NULL)
 	{
-		return "error";
+		CException EXCObjet;
+
 	}
 	else 
 	{
-		return &psPARNomFichier;
+		return psPARNomFichier;
 	}
 }
 
@@ -86,7 +87,7 @@ void CParser::PARModifierNomFichier(char* sNomFichier)
 
 
 template <class MType>
-CParser::PARLireFichier()
+CMatrice<MType> CParser::PARLireFichier()
 {
 	if (psPARNomFichier == NULL)
 	{
@@ -94,18 +95,18 @@ CParser::PARLireFichier()
 		exit(EXIT_FAILURE);
 	}
 	FILE* fichier = NULL;
-	/* On ouvre notre fichier en mode lecture */
+	// On ouvre notre fichier en mode lecture 
 	fichier = fopen(psPARNomFichier, "r");
 	if (fichier == NULL)
 	{
 		perror("fail");
 		exit(EXIT_FAILURE);
 	}
-	/*
-	on veut récupérer les lignes du fichier et les stocker dans une matrice CMatrice
-	*/
+	
+	//on veut récupérer les lignes du fichier et les stocker dans une matrice CMatrice
+	
 	fscanf(fichier, %s, )
 }
 
-
+*/
 #endif //PAR

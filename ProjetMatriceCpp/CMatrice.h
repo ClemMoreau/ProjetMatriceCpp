@@ -256,13 +256,7 @@ Entraîne :	L'objet est initialisé à partir des attributs
 template <class MType>
 CMatrice<MType>::CMatrice(CMatrice<MType>& MATMatrice)
 {
-	/*if (MATMatrice == NULL)
-	{
-		CException EXCObjet;
-		EXCObjet.EXCmodifier_valeur(matrice_param_null);
-		throw(EXCObjet);
-	}*/
-	// recopie des dimensions de la matrice
+	// Recopie des dimensions de la matrice
 	MATModifierNombreColonne(MATMatrice.MATLireNombreColonne()); 
 	MATModifierNombreLigne(MATMatrice.MATLireNombreLigne());
 
@@ -327,17 +321,8 @@ les derniers traitements sont réalisé
 template <class MType>
 CMatrice<MType>::~CMatrice()
 {
-
-	///CE BLOC DEVIENT INUTILE A CAUSE DES SETTERS
-	/*for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < MATLireNombreColonne(); uiIndiceBoucleColonne++)
-	{
-		if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
-		{
-			// Destruction des lignes de la matrice
-			delete *(ppMATMatrice + uiIndiceBoucleColonne);
-		}
-	}*/
 	// Mise à jour du nombre de ligne et de colonne de la matrice
+		/// La suppression du contenu de la matrice est géré par les setters sur les lignes/colonnes
 	MATModifierNombreColonne(0);
 	MATModifierNombreLigne(0);
 	
@@ -386,8 +371,8 @@ Entraîne :	(retourne l'élément) ou (exception levé pour dimension incorrecte)
 template <class MType>
  MType CMatrice<MType>::MATLireElement(int uiIndiceLigne, int uiIndiceColonne)
 { 
-	 if ((unsigned) uiIndiceLigne > MATLireNombreLigne() || (unsigned int) uiIndiceColonne > MATLireNombreColonne()
-		 || uiIndiceLigne < 0 || uiIndiceColonne < 0)
+	 if (uiIndiceLigne < 0 || uiIndiceColonne < 0
+		 ||(unsigned) uiIndiceLigne > MATLireNombreLigne() || (unsigned int) uiIndiceColonne > MATLireNombreColonne())
 	 {
 		 CException EXCObjet;
 		 EXCObjet.EXCmodifier_valeur(dimension_incorrecte);
@@ -434,16 +419,6 @@ void CMatrice<MType>::MATModifierNombreLigne(int uiNbLigne)
 				*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = NULL;
 			}
 		}
-
-		//destruction ancien tableau
-		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
-		{
-			if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
-			{
-				delete *(ppMATMatrice + uiIndiceBoucleColonne);
-			}
-		}
-		delete ppMATMatrice;
 	}
 	else //si on enlève des lignes
 	{
@@ -455,16 +430,17 @@ void CMatrice<MType>::MATModifierNombreLigne(int uiNbLigne)
 				*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
 			}
 		}
-		//destruction ancien tableau
-		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
-		{
-			if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
-			{
-				delete *(ppMATMatrice + uiIndiceBoucleColonne);
-			}
-		}
-		delete ppMATMatrice;
 	}
+
+	//destruction ancien tableau
+	for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+	{
+		if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
+		{
+			delete *(ppMATMatrice + uiIndiceBoucleColonne);
+		}
+	}
+	delete ppMATMatrice;
 	ppMATMatrice = ppMTypeTempo;
 	ppMTypeTempo = NULL;
 	uiMATNbLigne = uiNbLigne;
@@ -507,16 +483,6 @@ void CMatrice<MType>::MATModifierNombreColonne(int uiNbColonne)
 				*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = NULL;
 			}
 		}
-
-		//destruction ancien tableau
-		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
-		{
-			if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
-			{
-				delete *(ppMATMatrice + uiIndiceBoucleColonne);
-			}
-		}
-		delete ppMATMatrice;
 	}
 	else //si on enlève des colonnes
 	{
@@ -528,16 +494,17 @@ void CMatrice<MType>::MATModifierNombreColonne(int uiNbColonne)
 				*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
 			}
 		}
-		//destruction ancien tableau
-		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
-		{
-			if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
-			{
-				delete *(ppMATMatrice + uiIndiceBoucleColonne);
-			}
-		}
-		delete ppMATMatrice;
 	}
+
+	//destruction ancien tableau
+	for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+	{
+		if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
+		{
+			delete *(ppMATMatrice + uiIndiceBoucleColonne);
+		}
+	}
+	delete ppMATMatrice;
 	ppMATMatrice = ppMTypeTempo;
 	ppMTypeTempo = NULL;
 	uiMATNbColonne = uiNbColonne;
@@ -554,7 +521,8 @@ Entraîne : *(*(ppMATMatrice + uiIndiceColonne) + uiIndiceLigne) = MTypeParam
 template <class MType>
 void CMatrice<MType>::MATModifierElement(int uiIndiceLigne, int uiIndiceColonne, MType MTypeParam)
 {
-	if ((unsigned int)uiIndiceLigne > MATLireNombreLigne() || (unsigned int)uiIndiceColonne > MATLireNombreColonne())
+	if ((unsigned int)uiIndiceLigne > MATLireNombreLigne() || (unsigned int)uiIndiceColonne > MATLireNombreColonne()
+		|| uiIndiceLigne < 0 || uiIndiceLigne < 0)
 	{
 		CException EXCObjet;
 		EXCObjet.EXCmodifier_valeur(dimension_incorrecte);
@@ -684,6 +652,12 @@ CMatrice<MType>& CMatrice<MType>::operator-(CMatrice<MType>& MATMatrice)
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType>& MATMatrice)
 {
+	if (MATMatrice.MATLireNombreLigne() != MATLireNombreColonne)
+	{
+		CException EXCLevee;
+		EXCLevee.EXCmodifier_valeur(dimension_incorrecte);
+		throw(EXCLevee);
+	}
 	CMatrice<MType>* pMATMatriceProduit = new CMatrice<MType>(*this);
 	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbColonne; uiBoucleColonne++)
 	{
