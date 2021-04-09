@@ -1,32 +1,37 @@
 #include "CParser.h"
+#include "CMatrice.h"
+#include "CException.h"
+
 
 CParser::CParser()
 {
 	psPARNomFichier = NULL;
 }
 
-CParser::CParser(CParser &PARParser)
-{
-	PARModifierNomFichier(PARParser.PARLireNomFichier());
-}
 
 CParser::~CParser()
 {
-	PARModifierNomFichier(NULL);
+	delete psPARNomFichier;
 }
+
 
 char* CParser::PARLireNomFichier()
 {
-	return psPARNomFichier;
+	if (psPARNomFichier == NULL)
+	{
+		CException EXCObjet;
+
+	}
+	else
+	{
+		return psPARNomFichier;
+	}
 }
+
 
 void CParser::PARModifierNomFichier(char* sNomFichier)
 {
-	psPARNomFichier = sNomFichier;
-}
-
-template <class MType>
-CMatrice<MType> CParser::PARLireFichier()
-{
 
 }
+
+
