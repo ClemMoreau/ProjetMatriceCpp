@@ -98,7 +98,7 @@ CMatrice<MType> CParser::PARLireFichier()
 		strtok(cType,cdelim);
 		pcType = strtok(cType, cdelim);
 
-		if (pcType != 'double')
+		if (pcType != "double")
 		{
 			cout << "Erreur Mauvais type" << endl;
 			/*On appelle CExeption*/
