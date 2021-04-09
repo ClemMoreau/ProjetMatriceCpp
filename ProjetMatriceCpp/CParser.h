@@ -2,6 +2,8 @@
 #define PAR 0
 #include <stdio.h>
 #include "CMatrice.h"
+#include <iostream>
+#include <cstring>
 
 
 class CParser
@@ -53,60 +55,87 @@ public:
 	template <class MType> CMatrice<MType> PARLireFichier();
 };
 
-/*
-CParser::CParser()
-{
-	psPARNomFichier = NULL;
-}
-
-
-CParser::~CParser()
-{
-	delete psPARNomFichier;
-}
-
-
-char* CParser::PARLireNomFichier()
-{
-	if (psPARNomFichier == NULL)
-	{
-		CException EXCObjet;
-
-	}
-	else 
-	{
-		return psPARNomFichier;
-	}
-}
-
-
-void CParser::PARModifierNomFichier(char* sNomFichier)
-{
-
-}
-
-
 template <class MType>
 CMatrice<MType> CParser::PARLireFichier()
 {
 	if (psPARNomFichier == NULL)
 	{
-		perror("pas de fichier trouvé");
-		exit(EXIT_FAILURE);
+		cout << "Erreur fichier inexistant !" << endl;
 	}
-	FILE* fichier = NULL;
-	// On ouvre notre fichier en mode lecture 
-	fichier = fopen(psPARNomFichier, "r");
-	if (fichier == NULL)
+	FILE* pfFichier = NULL;
+	// On ouvre notre fichier en mode lecture
+	pfFichier = fopen(psPARNomFichier, "r");
+
+	//Déclaration des variables
+	char cType[];
+	char cNbLignes[];
+	char cNbColonnes[];
+	char cIgnore[];
+	unsigned int uiNbColonnes;
+	unsigned int uiNbLignes;
+	char* pcType;
+	char cdelim[] = "=";
+	double* dValeur;
+
+
+	/*
+		Sortie : Donné récupéré depuis le fichier si fichier respecte la nomenclature
+		But : On récupère le type et le nb de lignes et de colonnes avec fscanf
+			On utilise strtok pour récupérer ce qu'il y a aprés les espaces.
+	*/
+	if (pfFichier == NULL)
 	{
-		perror("fail");
-		exit(EXIT_FAILURE);
+		cout << "Erreur d'ouverture du fichier en lecture" << endl;
 	}
-	
+	else
+	{
+		//fscanf(notrefichier, "format donné à récupérer", lieu stockage donnée)
+		fscanf(pfFichier, "%s", cType);
+		fscanf(pfFichier, "%s", cNbLignes );
+		fscanf(pfFichier, "%s", cNbColonnes);
+
+		//strtok(la chaine de caractère que l'on va traiter, l'opérateur délimitant)
+		strtok(cType,cdelim);
+		pcType = strtok(cType, cdelim);
+
+		if (pcType != 'double')
+		{
+			cout << "Erreur Mauvais type" << endl;
+			/*On appelle CExeption*/
+		}
+		strtok(cType, cdelim);
+		pcType = strtok(cType, cdelim);
+
+		strtok(cNbLignes, delim);
+		uiNbLignes = strtok(cNbLignes, cdelim);
+
+		strtok(cNbColonnes, cdelim);
+		uiNbColonnes = strtok(cNbColonnes, cdelim);
+
+		CMatrice<MType>(uiNbLignes, uiNbColonnes);
+
+		//on ignore la ligne
+		fscanf(pfFichier, '%s', cIgnore);
+
+		//boucle permettant la récupération et le stockage des valeurs de la matrice
+		// strcpy(destination de la copie, source de la copie)
+		for (unsigned int uiIndiceBoucleScan; uiIndiceBoucleScan <= uiNbLignes;++uiIndiceBoucleScan) 
+		{
+			fscanf(pfFichier, '%s', dValeur);
+		}
+		for (unsigned int uiIndiceBoucleCopy; uiIndiceBoucleCopy < uiNbLignes; += uiIndiceBoucleCopy)
+		{
+			// à revoir comment définir une matrice comme destinataire 
+			strcpy(CMatrice, dValeur);
+		}
+		
+		//fermeture du fichier
+		fclose(pfFichier);
+	}
+
 	//on veut récupérer les lignes du fichier et les stocker dans une matrice CMatrice
-	
+
 	fscanf(fichier, %s, )
 }
 
-*/
 #endif //PAR
