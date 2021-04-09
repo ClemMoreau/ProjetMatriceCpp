@@ -5,7 +5,6 @@
 int main()
 {
 	CMatrice<int> Mati(3, 3);
-	
 	int k = 0;
 	for (int i = 1; i < 4; i++)
 	{
@@ -16,7 +15,22 @@ int main()
 		}
 	}
 	Mati.MATAfficherMatrice();
-	CMatrice<int> MATT(Mati);
-	MATT.MATAfficherMatrice();
-	
+	CMatrice<int> MATMatrice(4,4);
+	for (int i = 1; i < 5; i++)
+	{
+		for (int j = 1; j < 5; j++)
+		{
+			MATMatrice.MATModifierElement(i, j, k);
+			k++;
+		}
+	}
+	MATMatrice.MATAfficherMatrice();
+	try {
+
+	(	MATMatrice * Mati).MATAfficherMatrice();
+	}
+	catch (CException EXCc)
+	{
+		std::cout << "raté\n";
+	}
 }

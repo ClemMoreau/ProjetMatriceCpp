@@ -8,6 +8,11 @@ CParser::CParser()
 	psPARNomFichier = NULL;
 }
 
+CParser::CParser(CParser &PARParser)
+{
+
+}
+
 
 CParser::~CParser()
 {

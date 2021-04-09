@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstring>
 
+using namespace std;
 
 class CParser
 {
@@ -58,7 +59,7 @@ public:
 template <class MType>
 CMatrice<MType> CParser::PARLireFichier()
 {
-	if (psPARNomFichier == NULL)
+	/*if (psPARNomFichier == NULL)
 	{
 		cout << "Erreur fichier inexistant !" << endl;
 	}
@@ -75,7 +76,7 @@ CMatrice<MType> CParser::PARLireFichier()
 	unsigned int uiNbLignes;
 	char* pcType;
 	char cdelim[] = "=";
-	double* dValeur;
+	double* dValeur;*/
 
 
 	/*
@@ -83,6 +84,7 @@ CMatrice<MType> CParser::PARLireFichier()
 		But : On récupère le type et le nb de lignes et de colonnes avec fscanf
 			On utilise strtok pour récupérer ce qu'il y a aprés les espaces.
 	*/
+	/*
 	if (pfFichier == NULL)
 	{
 		cout << "Erreur d'ouverture du fichier en lecture" << endl;
@@ -101,7 +103,7 @@ CMatrice<MType> CParser::PARLireFichier()
 		if (pcType != "double")
 		{
 			cout << "Erreur Mauvais type" << endl;
-			/*On appelle CExeption*/
+			//On appelle CExeption
 		}
 		strtok(cType, cdelim);
 		pcType = strtok(cType, cdelim);
@@ -123,7 +125,7 @@ CMatrice<MType> CParser::PARLireFichier()
 		{
 			fscanf(pfFichier, '%s', dValeur);
 		}
-		for (unsigned int uiIndiceBoucleCopy; uiIndiceBoucleCopy < uiNbLignes; += uiIndiceBoucleCopy)
+		for (unsigned int uiIndiceBoucleCopy; uiIndiceBoucleCopy < uiNbLignes; uiIndiceBoucleCopy += uiIndiceBoucleCopy)
 		{
 			// à revoir comment définir une matrice comme destinataire 
 			strcpy(CMatrice, dValeur);
@@ -135,7 +137,8 @@ CMatrice<MType> CParser::PARLireFichier()
 
 	//on veut récupérer les lignes du fichier et les stocker dans une matrice CMatrice
 
-	fscanf(fichier, %s, )
+	//fscanf(fichier, %s, )
+	return NULL; */
 }
 
 #endif //PAR
