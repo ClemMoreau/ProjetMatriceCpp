@@ -16,8 +16,7 @@ int main()
 		}
 	}
 	Mati.MATAfficherMatrice();
-	Mati.MATModifierNombreLigne(4);
-	Mati.MATAfficherMatrice();
-	Mati.MATModifierNombreLigne(2);
-	Mati.MATAfficherMatrice();
+	CMatrice<int> MATT(Mati);
+	MATT.MATAfficherMatrice();
+	
 }
