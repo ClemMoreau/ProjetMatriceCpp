@@ -59,9 +59,11 @@ public:
 template <class MType>
 CMatrice<MType> CParser::PARLireFichier()
 {
-	/*if (psPARNomFichier == NULL)
+	
+	cout << "laisse moi dormir zeubi";
+	if (psPARNomFichier == NULL)
 	{
-		cout << "Erreur fichier inexistant !" << endl;
+		std::cout << "Erreur fichier inexistant !" << std::endl;
 	}
 	FILE* pfFichier = NULL;
 	// On ouvre notre fichier en mode lecture
@@ -76,7 +78,7 @@ CMatrice<MType> CParser::PARLireFichier()
 	unsigned int uiNbLignes;
 	char* pcType;
 	char cdelim[] = "=";
-	double* dValeur;*/
+	double* dValeur;
 
 
 	/*
@@ -84,25 +86,30 @@ CMatrice<MType> CParser::PARLireFichier()
 		But : On récupère le type et le nb de lignes et de colonnes avec fscanf
 			On utilise strtok pour récupérer ce qu'il y a aprés les espaces.
 	*/
-	/*
+	
 	if (pfFichier == NULL)
 	{
-		cout << "Erreur d'ouverture du fichier en lecture" << endl;
+		std::cout << "Erreur d'ouverture du fichier en lecture" << std::endl;
 	}
 	else
 	{
 		//fscanf(notrefichier, "format donné à récupérer", lieu stockage donnée)
 		fscanf(pfFichier, "%s", cType);
+		std::cout << "type :" << cType;
+
 		fscanf(pfFichier, "%s", cNbLignes );
+		std::cout << "nblignes :" << cNbLignes;
+
 		fscanf(pfFichier, "%s", cNbColonnes);
+		std::cout << "nbcol :" << cNbColonnes;
 
 		//strtok(la chaine de caractère que l'on va traiter, l'opérateur délimitant)
-		strtok(cType,cdelim);
+		/*strtok(cType,cdelim);
 		pcType = strtok(cType, cdelim);
 
 		if (pcType != "double")
 		{
-			cout << "Erreur Mauvais type" << endl;
+			std::cout << "Erreur Mauvais type" << std::endl;
 			//On appelle CExeption
 		}
 		strtok(cType, cdelim);
@@ -132,13 +139,13 @@ CMatrice<MType> CParser::PARLireFichier()
 		}
 		
 		//fermeture du fichier
-		fclose(pfFichier);
+		fclose(pfFichier);*/
 	}
 
 	//on veut récupérer les lignes du fichier et les stocker dans une matrice CMatrice
 
 	//fscanf(fichier, %s, )
-	return NULL; */
+	return NULL; 
 }
 
 #endif //PAR
