@@ -4,57 +4,54 @@
 
 int main()
 {
-	CMatrice<double> MATMatriceId(3,3);
+	//entiers
+	CMatrice<float> MATMatrice(3,3);
+	float k = 0;
 	for (int i = 1; i < 4; i++)
 	{
-		for (int j = 1; j < 4; j++)
+		for (int j = 1; j < 4; j++,k++)
 		{
-			MATMatriceId.MATModifierElement(i, j, 0);
-		}
-	}
-	MATMatriceId.MATModifierElement(1, 1, 1);
-	MATMatriceId.MATModifierElement(2, 2, 1);
-	MATMatriceId.MATModifierElement(3, 3, 1);
-	std::cout << "Matrice Id :" << std::endl;
-	MATMatriceId.MATAfficherMatrice();
-
-	CMatrice<double> Mati(3, 3);
-	double k = 0.0;
-	for (int i = 1; i < 4; i++)
-	{
-		for (int j = 1; j < 4; j++)
-		{
-			Mati.MATModifierElement(i, j, k);
-			k++;
+			MATMatrice.MATModifierElement(i, j, k);
 		}
 	}
 
-	std::cout << "Mati :" << std::endl;
-	Mati.MATAfficherMatrice();
-	CMatrice<double> MATMatrice;
-	MATMatrice = Mati / 2;
-	std::cout << "Division constante :" << std::endl;
 	MATMatrice.MATAfficherMatrice();
-	CMatrice<double> MATMatrice2;
-	MATMatrice2 = Mati * 2;
-	std::cout << "Multiplication constante :" << std::endl;
+	(MATMatrice / 2).MATAfficherMatrice();
+	(MATMatrice * 2).MATAfficherMatrice();
+	(MATMatrice + MATMatrice).MATAfficherMatrice();
+	(MATMatrice - MATMatrice).MATAfficherMatrice();
+	(MATMatrice * MATMatrice).MATAfficherMatrice();
+
+	std::cout << "MATMatrice" << std::endl;
+	MATMatrice.MATAfficherMatrice();
+	CMatrice<float> MATMatrice2(3, 3);
+	for (int i = 1; i < 4; i++)
+	{
+		for (int j = 1; j < 4; j++, k++)
+		{
+			MATMatrice2.MATModifierElement(i, j, k);
+		}
+	}
+	std::cout << "MATMatrice2" << std::endl;
 	MATMatrice2.MATAfficherMatrice();
-
-	CMatrice<double> MATMatriceCopie(Mati);
-
-	CMatrice<double> MATMatrice3;
-	MATMatrice3 = Mati + MATMatriceCopie;
-	std::cout << "Addition :" << std::endl;
+	CMatrice<float> MATMatrice3(3, 3);
+	for (int i = 1; i < 4; i++)
+	{
+		for (int j = 1; j < 4; j++, k++)
+		{
+			MATMatrice3.MATModifierElement(i, j, k);
+		}
+	}
+	std::cout << "MATMatrice3" << std::endl;
 	MATMatrice3.MATAfficherMatrice();
-	CMatrice<double> MATMatrice4;
-	MATMatrice4 = Mati - MATMatriceCopie;
-	std::cout << "Différence :" << std::endl;
-	MATMatrice4.MATAfficherMatrice();
-	CMatrice<double> MATMatrice5;
-	std::cout << "Produit matricielle :" << std::endl;
-	MATMatrice5 = Mati * MATMatriceCopie;
-	MATMatrice5.MATAfficherMatrice();
 
+	CMatrice<float>* pMATMatriceTab = new CMatrice<float>[3];
+	pMATMatriceTab[0] = MATMatrice;
+	pMATMatriceTab[1] = MATMatrice2;
+	pMATMatriceTab[2] = MATMatrice3;
+	pMATMatriceTab[0].MATAfficherMatrice();
+	pMATMatriceTab[1].MATAfficherMatrice();
+	pMATMatriceTab[2].MATAfficherMatrice();
 }
 /* mettre des return 1 à chaque erreur, puis tester avec des boucles whiles et mettres des messages pour guider utilisateur (ce qu'il se passe/ ce qu'il doit faire)
 using namespace std;

@@ -252,9 +252,9 @@ uiMATNbColonne = 0 et **ppMATMatrice = NULL
 template <class MType>
 CMatrice<MType>::CMatrice()
 {
-	MATModifierNombreColonne(0);
-	MATModifierNombreLigne(0);
-	ppMATMatrice = NULL;	//voir pour passer par une méthode
+	uiMATNbLigne = 0;
+	uiMATNbColonne = 0;
+	ppMATMatrice = NULL;
 }
 
 /*********************************************************
