@@ -2,21 +2,22 @@
 #include "CMatrice.h"
 #include "CException.h"
 
+#define nom_null 201
 
 CParser::CParser()
 {
-	psPARNomFichier = NULL;
+	PARModifierNomFichier(NULL);
 }
 
 CParser::CParser(CParser &PARParser)
 {
-
+	PARModifierNomFichier(PARParser.PARLireNomFichier());
 }
 
 
 CParser::~CParser()
 {
-	delete psPARNomFichier;
+	free(psPARNomFichier);
 }
 
 
@@ -25,18 +26,36 @@ char* CParser::PARLireNomFichier()
 	if (psPARNomFichier == NULL)
 	{
 		CException EXCObjet;
+		EXCObjet.EXCmodifier_valeur(nom_null);
+		throw(EXCObjet);
 
 	}
-	else
-	{
-		return psPARNomFichier;
-	}
+	return psPARNomFichier;
 }
 
 
-void CParser::PARModifierNomFichier(char* sNomFichier)
+void CParser::PARModifierNomFichier(const char* sNomFichier)
 {
+	if (sNomFichier)
+	{
+		if (psPARNomFichier)
+		{
+			free(psPARNomFichier);
+		}
 
+		int iConteur = strlen(sNomFichier);
+		psPARNomFichier = (char*)malloc(iConteur + 1);
+		int iBoucleCopie;
+		for (iBoucleCopie = 0; iBoucleCopie < iConteur; iBoucleCopie++)
+		{
+			psPARNomFichier[iBoucleCopie] = sNomFichier[iBoucleCopie];
+		}
+		psPARNomFichier[iBoucleCopie] = '\0';
+	}
+	else 
+	{
+		psPARNomFichier = NULL;
+	}
 }
 
 

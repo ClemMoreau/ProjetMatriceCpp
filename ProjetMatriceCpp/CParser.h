@@ -45,7 +45,7 @@ public:
 		Paramètre en entrée : sNomFichier --> Le nom du fichier
 		Paramètre en sortie : Le nom du fichier modifié
 	*/
-	void PARModifierNomFichier(char* sNomFichier);
+	void PARModifierNomFichier(const char* sNomFichier);
 
 	/*
 		Lecture du fichier
