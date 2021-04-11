@@ -6,17 +6,13 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	/*CParser PARParser;
-	PARParser.PARModifierNomFichier("bonjour");
-	cout << "TEST : " << PARParser.PARLireNomFichier() << endl << endl;*/
-
+	CParser PARParser;
+	PARParser.PARModifierNomFichier("C:/Users/cleme/Downloads/new 2.txt");
+	cout << "TEST : " << PARParser.PARLireNomFichier() << endl << endl;
+	PARParser.PARLireFichier();
 	/* test de bibi pour le parsage jarrive pas à lancer la fonction lirre fichier */
 
-	/*CParser();
-	const char *psPARNomFichier = "ProjetMatriceCpp/Fichiers de resources/monq.txt";
-
-	void PARLireFichier();
-	cout << "ntm";*/
+	
 	
 
 
