@@ -7,12 +7,11 @@ int main()
 {
 	/* test de bibi pour le parsage jarrive pas à lancer la fonction lirre fichier */
 
-	/*CParser();
+	/*
 	const char *psPARNomFichier = "ProjetMatriceCpp/Fichiers de resources/monq.txt";
-	
-	void PARLireFichier();
-	cout << "ntm";*/
-	
+	CParser PARLireFichier(psPARNomFichier);
+	cout << "ntm";
+	*/
 	//entiers
 	CMatrice<float> MATMatrice(3,3);
 	float k = 0;
