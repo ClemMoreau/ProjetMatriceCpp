@@ -132,14 +132,14 @@ CMatrice<double>& CParser::PARLireFichier()
 	/*
 		On lève l'exception sur le Type	
 	*/
-	/*if (pcType != "double")
+	if (pcType != "double")
 	{
 		cout << "Vous avez rentre un type invalide" << endl;
 		CException EXCType;
 		EXCType.EXCmodifier_valeur(mauvais_type);
 		throw(EXCType);
 	}
-	*/
+	
 	/******Si type est valide on récupère les composant de la matrice*******/
 
 	/*
