@@ -1,7 +1,9 @@
 #include "CParser.h"
-
+#include <string>
+#include "CException.h"
 
 #define nom_null 201
+#define mauvais_type 202
 
 CParser::CParser()
 {
@@ -59,21 +61,109 @@ void CParser::PARModifierNomFichier(const char* sNomFichier)
 
 CMatrice<double>& CParser::PARLireFichier()
 {
+	/* Ouverture du fichier */
 	ifstream fFichier(PARLireNomFichier());
 	if (!fFichier)
 	{
-
+		/* On teste si l'ouverture c'est bien déroulé */
 	}
-	///Permet de lire un mot (donc need espace entre les mots)
-	/*char cIgnore[5];
-	fFichier >> cIgnore; 
-	cout << cIgnore << endl;*/
+	
+	/* 
+		cdelim est notre séparateur
+		Utilisé pour la fonction strtok() 	   
+	*/
+	char cdelim[] = "=";
 
-	// et avec ça tu récupe le début du fichier : c'est pas trop génie log par contre faudra plutot un truc qui se déplace jusqu'au =
-	char* pointeur = (char*)malloc(13);
-	fFichier.getline(pointeur, 13);
-	printf("%s\n" ,pointeur);
+	/*
+		on initialise des tableaux de caractère pour y stocker les lignes de notre fichier
+	*/
+	char cType[100], cNbLignes[100], cNbColonnes[100], cIgnore[200], cMatElement[200];
 
-	CMatrice<double>* pMATMatrice = new CMatrice<double>(3,3);
+	/*
+		pointeur sur des chaine de caracyère qui vont contenir les infos importantes extraites
+	*/
+	char *pcType = NULL, *pcNbLignes = NULL, *pcNbColonnes = NULL;
+
+	/*
+		spécifie le contexte
+		Utilisé pour la fonction strtok_s
+	*/
+	char *pcElementsuivT = NULL, *pcElementsuivL = NULL, *pcElementsuivC= NULL;
+
+	/*
+		Récupération des 4 premières lignes du fichier	
+	*/
+	fFichier >> cType; 
+	fFichier >> cNbLignes;
+	fFichier >> cNbColonnes;
+	fFichier >> cIgnore;
+	
+	/*
+		pointeurs temporaires qui permettent de récupérer nos infos du fichier
+		/!\ Utilisé car strtok retourne NULL comme dernier caractère
+	*/
+	char *pctempType = strtok_s(cType, cdelim, &pcElementsuivT);
+	char *pctempNbLignes = strtok_s(cNbLignes, cdelim, &pcElementsuivL);
+	char *pctempNbColonnes = strtok_s(cNbColonnes, cdelim, &pcElementsuivC);
+
+	/*
+		Boucle parcourant chaque chaine de caractère et séparant les mots au niveau du "="	
+	*/
+	while (pctempType != NULL)
+	{
+		if (pctempType != NULL)
+		{
+			pcType = pctempType;
+			pctempType = strtok_s(NULL, cdelim, &pcElementsuivT);
+			
+		}
+		if (pctempNbLignes != NULL)
+		{
+			pcNbLignes = pctempNbLignes;
+			pctempNbLignes = strtok_s(NULL, cdelim, &pcElementsuivL);
+		}
+		if (pctempNbColonnes != NULL)
+		{
+			pcNbColonnes = pctempNbColonnes;
+			pctempNbColonnes = strtok_s(NULL, cdelim, &pcElementsuivC);
+		}
+	}
+
+	/*
+		On lève l'exception sur le Type	
+	*/
+	/*if (pcType != "double")
+	{
+		cout << "Vous avez rentre un type invalide" << endl;
+		CException EXCType;
+		EXCType.EXCmodifier_valeur(mauvais_type);
+		throw(EXCType);
+	}
+	*/
+	/******Si type est valide on récupère les composant de la matrice*******/
+
+	/*
+		Conversion de nos chaînes de caractère
+	*/
+	unsigned int uiNbLignes = atoi(pcNbLignes);
+	unsigned int uiNbColonnes = atoi(pcNbColonnes);
+	
+	CMatrice<double>* pMATMatrice = new CMatrice<double>(uiNbLignes,uiNbColonnes);
+
+	/*
+		Lecture des éléments et remplissage de l'objet matrice
+	*/
+	for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiNbLignes; ++uiBoucleLigne)
+	{
+		for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiNbColonnes; ++uiBoucleColonne)
+		{
+			fFichier >> cMatElement;
+			double dMatElement = atoi(cMatElement);
+			pMATMatrice->MATModifierElement(uiBoucleLigne,uiBoucleColonne, dMatElement);
+		}
+	}
+	pMATMatrice->MATAfficherMatrice();
+
 	return *pMATMatrice;
+
 }

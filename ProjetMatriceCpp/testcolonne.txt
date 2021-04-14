@@ -1,0 +1,10 @@
+TypeMatrice=double
+NBLignes=5
+NBColonnes=1
+Matrice=[
+5
+3
+555
+33
+3
+]
