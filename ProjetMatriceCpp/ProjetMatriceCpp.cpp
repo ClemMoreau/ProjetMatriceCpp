@@ -1,26 +1,13 @@
 #include <iostream>
-#include "CException.h"
-#include "CMatrice.h"
 #include "CParser.h"
+
 using namespace std;
 
 int main(int argc, char *argv[])
 {
-	CParser PARParser;
-	PARParser.PARModifierNomFichier("C:/Users/jeana/source/repos/test2/ProjetMatriceCpp/test4x4.txt");
-	cout << "TEST : " << PARParser.PARLireNomFichier() << endl << endl;
-	PARParser.PARLireFichier();
-	
-
-	
-	
-
-
-
-
 
 	/* Fonction principale */
-	/*CParser PARParser;
+	CParser PARParser;
 	double dFin;
 	if (argc < 2)
 	{
@@ -163,6 +150,6 @@ int main(int argc, char *argv[])
 		cout << "Toutes les operations sont terminees !" << endl;
 		cout << "Veuillez entrer quelque chose puis appuyer sur entree pour quitter..." << endl;
 		cin >> dFin;
-	}*/
+	}
 	return 0;
 }					

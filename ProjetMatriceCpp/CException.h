@@ -54,7 +54,7 @@ public:
 	Sortie: (rien)
 	Entraîne :	this.uiEXCValeur = uiValeur
 	*********************************************************/
-	void EXCmodifier_valeur(int uiValeur);
+	void EXCmodifier_valeur(int iValeur);
 
 	/*GETTER*/
 
@@ -63,9 +63,9 @@ public:
 	*********************************************************
 	Entrée: (rien)
 	Nécessite:	(rien)
-	Sortie: int : le code de l'exception à levé
+	Sortie: unsigned int : le code de l'exception à levé
 	Entraîne :	(rien)
 	*********************************************************/
-	int EXClire_valeur();
+	unsigned int EXClire_valeur();
 };
 #endif //EXC

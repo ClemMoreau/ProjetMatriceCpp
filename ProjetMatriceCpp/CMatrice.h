@@ -3,9 +3,9 @@
 #include <stdio.h>
 #include "CException.h"
 
-#define dimension_incorrecte 101
-#define dim_matrice_diff 103
-#define diviseur_nul 104
+#define dimension_incorrecte 201
+#define dim_matrice_diff 203
+#define diviseur_nul 204
 
 template <class MType> class CMatrice
 {
@@ -224,7 +224,7 @@ public:
 	Sortie: CMatrice<MType> MATMatrice : le produit de la matrice pour MTypeParam
 	Entraîne :
 	*********************************************************/
-	CMatrice<MType>& operator*(MType MTypeParam);
+	CMatrice<MType>& operator*(const MType MTypeParam);
 
 	/*********************************************************
 	Surcharge de l'operateur / pour la classe CMatrice<MType>
@@ -236,7 +236,7 @@ public:
 	Entraîne : (tous les éléments de la matrice en sortie sont divisé par MTypeParam)
 	ou (Levee l'exception diviseur_nul
 	*********************************************************/
-	CMatrice<MType>& operator/(MType MTypeParam);
+	CMatrice<MType>& operator/(const MType MTypeParam);
 
 };
 
@@ -289,7 +289,7 @@ Constructeur de recopie de la classe CMatrice
 prenant en paramètre le nombre de ligne et de colonne
 de la matrice à créer
 *********************************************************
-Entrée: CMatrice<MType>& MATMatrice : la matrice à recopier
+Entrée: int iNbLigne, int iNbColonne : les dimensions de la nouvelle matrice
 Nécessite:	(rien)
 Sortie: (rien)
 Entraîne :	L'objet initialisé est une matrice
@@ -337,7 +337,7 @@ CMatrice<MType>::~CMatrice()
 	MATModifierNombreLigne(0);
 	
 	// Destruction du tableau de colonnes de la matrice
-	delete ppMATMatrice;
+	delete[] ppMATMatrice ;
 
 }
 
@@ -372,8 +372,8 @@ unsigned int CMatrice<MType>::MATLireNombreColonne()
 /*********************************************************
 Renvoie l'élément ligne uiIndiceLigne et colonne uiIndiceColonne
 *********************************************************
-Entrée: (rien)
-Nécessite:	(uiIndiceColonne <= uiMATNbColonne) et (uiIndiceLigne <= uiMATNbLigne)				//voir si pré ou post condition (perso je pref post)
+Entrée: int iIndiceLigne, int iIndiceColonne : les indices de l'élément à retourner
+Nécessite:	(rien)
 Sortie: <MType> *(*(ppMATMatrice + uiIndiceColonne) + uiIndiceLigne) :
 l'élément ligne uiIndiceLigne et colonne uiIndiceColonne 
 Entraîne :	(retourne l'élément) ou (exception levé pour dimension incorrecte)
@@ -381,8 +381,8 @@ Entraîne :	(retourne l'élément) ou (exception levé pour dimension incorrecte)
 template <class MType>
  MType CMatrice<MType>::MATLireElement(int iIndiceLigne, int iIndiceColonne)
 { 
-	 // Test sur les indices passés en paramètre
-	 if (iIndiceLigne < 0 || iIndiceColonne < 0 || (unsigned int) iIndiceLigne > MATLireNombreLigne() || (unsigned int) iIndiceColonne > MATLireNombreColonne())
+	 // Vérification indices en paramètre
+	 if (iIndiceLigne < 0 || iIndiceColonne < 0 || iIndiceLigne > int(MATLireNombreLigne()) || iIndiceColonne > int(MATLireNombreColonne()))
 	 {
 		 CException EXCObjet;
 		 EXCObjet.EXCmodifier_valeur(dimension_incorrecte);
@@ -395,18 +395,20 @@ template <class MType>
 /*********************************************************
 Modifie le nombre de ligne de la matrice
 *********************************************************
-Entrée: unsigned int uiNbLigne : le nouveau nombre de ligne de la matrice
+Entrée: int iNbLigne : le nouveau nombre de ligne de la matrice
 Nécessite:	(rien)
 Sortie: (rien)
 Entraîne :	(uiMATNbLigne = uiNbLigne) et
 (les éléments des (uiMATNbLigne - uiNbLigne) dernières lignes on été supprimé)
 ou
 (les éléments des (uiNbLigne - uiMATNbLigne) lignes on été rajouté en bas de la matrice)
+ou
+(Exception dimension_incorrecte levé)
 *********************************************************/
 template <class MType>
 void CMatrice<MType>::MATModifierNombreLigne(int iNbLigne)
 {
-	// Test sur le nombre de ligne passé en paramètre
+	// Vérification nouveau nombre de colonnes positif
 	if (iNbLigne < 0)
 	{
 		CException EXCObjet;
@@ -414,67 +416,56 @@ void CMatrice<MType>::MATModifierNombreLigne(int iNbLigne)
 		throw(EXCObjet);
 	}
 	
-	///CHOISIR ENTRE PASSER PAR UN TALBEAU ET PASSER PAR UNE MATRICE
 	/* Création de la matrice avec le nouveau nombre de ligne */
-	
-	// Allocation du tableau de colonne de la matrice
-	/*MType** ppMTypeMatriceTempo = new MType*[uiMATNbColonne];
-	for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
-	{
-		// Allocation des lignes de la matrice
-		*(ppMTypeMatriceTempo + uiIndiceBoucleColonne) = new MType[iNbLigne];
-	}*/
-
+		/// utilisation du constructeur prenant un nombre ligne et de colonne en paramètre
 	CMatrice<MType> *MATMatriceTempo = new CMatrice(iNbLigne, uiMATNbColonne);
 
-	if ((unsigned int)iNbLigne > uiMATNbLigne)	// Cas on rajoute des lignes
+	if (iNbLigne > int(uiMATNbLigne))	// Cas on rajoute des lignes
 	{
 		// Copie de la matrice initiale : on copie toute la matrice
-		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		for (unsigned int uiBoucleIndiceColonne = 1; uiBoucleIndiceColonne <= uiMATNbColonne; uiBoucleIndiceColonne++)
 		{
-			for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiMATNbLigne; uiIndiceBoucleLigne++)
+			for (unsigned int uiBoucleIndiceLigne = 1; uiBoucleIndiceLigne <= uiMATNbLigne; uiBoucleIndiceLigne++)
 			{
-				//*(*(ppMTypeMatriceTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
-				MATMatriceTempo->MATModifierElement(uiIndiceBoucleLigne + 1, uiIndiceBoucleColonne + 1, MATLireElement(uiIndiceBoucleLigne + 1, uiIndiceBoucleColonne + 1));
+				MATMatriceTempo->MATModifierElement(uiBoucleIndiceLigne, uiBoucleIndiceColonne, MATLireElement(uiBoucleIndiceLigne, uiBoucleIndiceColonne));
 			}
 		}
 		// Initialisation des nouvelles lignes : on ne gère que les lignes rajouter (début de boucle en bas de la matrice)
-		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		for (unsigned int uiBoucleIndiceColonne = 1; uiBoucleIndiceColonne <= uiMATNbColonne; uiBoucleIndiceColonne++)
 		{
-			for (int iIndiceBoucleLigne = uiMATNbLigne; iIndiceBoucleLigne < iNbLigne; iIndiceBoucleLigne++)
+			for (int iBoucleIndiceLigne = uiMATNbLigne + 1; iBoucleIndiceLigne <= iNbLigne; iBoucleIndiceLigne++)
 			{
-				//*(*(ppMTypeMatriceTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = NULL;
-				MATMatriceTempo->MATModifierElement(iIndiceBoucleLigne + 1, uiIndiceBoucleColonne + 1, NULL);
+				MATMatriceTempo->MATModifierElement(iBoucleIndiceLigne, uiBoucleIndiceColonne, NULL);
 			}
 		}
 	}
 	else // Cas on enlève des lignes
 	{
 		// Copie de la matrice initiale : on ne copie que le nombre de ligne que l'on veux dans le résultat
-		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		for (unsigned int uiBoucleIndiceColonne = 1; uiBoucleIndiceColonne <= uiMATNbColonne; uiBoucleIndiceColonne++)
 		{
-			for (int iIndiceBoucleLigne = 0; iIndiceBoucleLigne < iNbLigne; iIndiceBoucleLigne++)
+			for (int iBoucleIndiceLigne = 1; iBoucleIndiceLigne <= iNbLigne; iBoucleIndiceLigne++)
 			{
-				//*(*(ppMTypeMatriceTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
-				MATMatriceTempo->MATModifierElement(iIndiceBoucleLigne + 1, uiIndiceBoucleColonne + 1, MATLireElement(iIndiceBoucleLigne + 1, uiIndiceBoucleColonne + 1));
+				MATMatriceTempo->MATModifierElement(iBoucleIndiceLigne, uiBoucleIndiceColonne, MATLireElement(iBoucleIndiceLigne, uiBoucleIndiceColonne));
 			}
 		}
 	}
 
 	// Destruction de l'ancien tableau
-	for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+	for (unsigned int uiBoucleIndiceColonne = 0; uiBoucleIndiceColonne < uiMATNbColonne; uiBoucleIndiceColonne++)
 	{
-		if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
+		if (*(ppMATMatrice + uiBoucleIndiceColonne) != NULL)
 		{
-			delete [] *(ppMATMatrice + uiIndiceBoucleColonne);
+			delete[] *(ppMATMatrice + uiBoucleIndiceColonne);
 		}
 	}
 	delete[] ppMATMatrice;
 
-	/*ppMATMatrice = ppMTypeTempo;
-	ppMTypeTempo = NULL;*/
+	// Récupération nouveau tableau
 	ppMATMatrice = MATMatriceTempo->ppMATMatrice;
 	MATMatriceTempo = NULL;
+
+	// Mise à jour du nombre de ligne
 	uiMATNbLigne = iNbLigne;
 }
 
@@ -482,18 +473,20 @@ void CMatrice<MType>::MATModifierNombreLigne(int iNbLigne)
 /*********************************************************
 Modifie le nombre de colonne de la matrice
 *********************************************************
-Entrée: unsigned int uiNbColonne : le nouveau nombre de colonne de la matrice
+Entrée: int iNbColonne : le nouveau nombre de colonne de la matrice
 Nécessite: (rien)
 Sortie: (rien)
 Entraîne : (uiMATNbColonne = uiNbColonne) et
-(les éléments des (uiMATNbColonne - uiNbColonne) dernières colonnes on été supprimé)
+(les éléments des (uiMATNbColonne - iNbColonne) dernières colonnes on été supprimé)
 ou
-(les éléments des (uiNbColonne - uiMATNbColonne) colones on été rajouté à droite de la matrice)
+(les éléments des (uiNbColonne - iMATNbColonne) colones on été rajouté à droite de la matrice)
+ou
+(Exception dimension_incorrecte levé)
 *********************************************************/
 template <class MType>
 void CMatrice<MType>::MATModifierNombreColonne(int iNbColonne)
 {
-	// Test sur le nombre de colonne passé en paramètre
+	// Vérification nouveau nombre de colonnes positif
 	if (iNbColonne < 0)
 	{
 		CException EXCObjet;
@@ -502,34 +495,25 @@ void CMatrice<MType>::MATModifierNombreColonne(int iNbColonne)
 	}
 
 	/* Création de la matrice avec le nouveau nombre de colonne */
-
-	// Allocation du tableau de colonne de la matrice
-	/*MType** ppMTypeTempo = new MType*[uiNbColonne];
-	for (int iIndiceBoucleColonne = 0; iIndiceBoucleColonne < uiNbColonne; iIndiceBoucleColonne++)
-	{
-		*(ppMTypeTempo + iIndiceBoucleColonne) = new MType[MATLireNombreLigne()];
-	}*/
-
+		/// utilisation du constructeur prenant un nombre ligne et de colonne en paramètre
 	CMatrice<MType> *MATMatriceTempo = new CMatrice(uiMATNbLigne,iNbColonne);
 
-	if ((unsigned int)iNbColonne > uiMATNbColonne)	// Cas on rajoute des colonnes
+	if (iNbColonne > int(uiMATNbColonne))	// Cas on rajoute des colonnes
 	{
 		// Copie de la matrice initiale : on copie toute la matrice
-		for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+		for (unsigned int uiBoucleIndiceColonne = 1; uiBoucleIndiceColonne <= uiMATNbColonne; uiBoucleIndiceColonne++)
 		{
-			for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiMATNbLigne; uiIndiceBoucleLigne++)
+			for (unsigned int uiBoucleIndiceLigne = 1; uiBoucleIndiceLigne <= uiMATNbLigne; uiBoucleIndiceLigne++)
 			{
-				//*(*(ppMTypeTempo + uiIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(ppMATMatrice + uiIndiceBoucleColonne) + uiIndiceBoucleLigne);
-				MATMatriceTempo->MATModifierElement(uiIndiceBoucleLigne + 1, uiIndiceBoucleColonne + 1, MATLireElement(uiIndiceBoucleLigne + 1, uiIndiceBoucleColonne + 1));
+				MATMatriceTempo->MATModifierElement(uiBoucleIndiceLigne, uiBoucleIndiceColonne, MATLireElement(uiBoucleIndiceLigne, uiBoucleIndiceColonne));
 			}
 		}
 		// Initialisation des nouvelles colonnes : on ne gère que les colonnes rajouter (début de boucle à droite de la matrice)
-		for (int iIndiceBoucleColonne = uiMATNbColonne; iIndiceBoucleColonne < iNbColonne; iIndiceBoucleColonne++)
+		for (int iBoucleIndiceColonne = uiMATNbColonne + 1; iBoucleIndiceColonne <= iNbColonne; iBoucleIndiceColonne++)
 		{
-			for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiMATNbLigne; uiIndiceBoucleLigne++)
+			for (unsigned int uiBoucleIndiceLigne = 1; uiBoucleIndiceLigne <= uiMATNbLigne; uiBoucleIndiceLigne++)
 			{
-				//*(*(ppMTypeTempo + iIndiceBoucleColonne) + uiIndiceBoucleLigne) = NULL;
-				MATMatriceTempo->MATModifierElement(uiIndiceBoucleLigne + 1, iIndiceBoucleColonne + 1,NULL);
+				MATMatriceTempo->MATModifierElement(uiBoucleIndiceLigne, iBoucleIndiceColonne, NULL);
 
 			}
 		}
@@ -537,12 +521,11 @@ void CMatrice<MType>::MATModifierNombreColonne(int iNbColonne)
 	else // Cas on enlève des colonnes
 	{
 		// Copie de la matrice initiale : on ne copie que le nombre de colonne que l'on veux dans le résultat
-		for (int iIndiceBoucleColonne = 0; iIndiceBoucleColonne < iNbColonne; iIndiceBoucleColonne++)
+		for (int iBoucleIndiceColonne = 1; iBoucleIndiceColonne <= iNbColonne; iBoucleIndiceColonne++)
 		{
-			for (unsigned int uiIndiceBoucleLigne = 0; uiIndiceBoucleLigne < uiMATNbLigne; uiIndiceBoucleLigne++)
+			for (unsigned int uiBoucleIndiceLigne = 1; uiBoucleIndiceLigne <= uiMATNbLigne; uiBoucleIndiceLigne++)
 			{
-				//*(*(ppMTypeTempo + iIndiceBoucleColonne) + uiIndiceBoucleLigne) = *(*(ppMATMatrice + iIndiceBoucleColonne) + uiIndiceBoucleLigne);
-				MATMatriceTempo->MATModifierElement(uiIndiceBoucleLigne + 1, iIndiceBoucleColonne + 1, MATLireElement(uiIndiceBoucleLigne + 1, iIndiceBoucleColonne + 1));
+				MATMatriceTempo->MATModifierElement(uiBoucleIndiceLigne, iBoucleIndiceColonne, MATLireElement(uiBoucleIndiceLigne, iBoucleIndiceColonne));
 
 			}
 		}
@@ -550,18 +533,20 @@ void CMatrice<MType>::MATModifierNombreColonne(int iNbColonne)
 
 	// Destruction de l'ancien tableau
 		///Ce bloc est utilisé par le destructeur pour la désalocation du tableau d'une matrice
-	for (unsigned int uiIndiceBoucleColonne = 0; uiIndiceBoucleColonne < uiMATNbColonne; uiIndiceBoucleColonne++)
+	for (unsigned int uiBoucleIndiceColonne = 0; uiBoucleIndiceColonne < uiMATNbColonne; uiBoucleIndiceColonne++)
 	{
-		if (*(ppMATMatrice + uiIndiceBoucleColonne) != NULL)
+		if (*(ppMATMatrice + uiBoucleIndiceColonne) != NULL)
 		{
-			delete [] *(ppMATMatrice + uiIndiceBoucleColonne);
+			delete[] *(ppMATMatrice + uiBoucleIndiceColonne);
 		}
 	}
 	delete [] ppMATMatrice;
-	/*ppMATMatrice = ppMTypeTempo;
-	ppMTypeTempo = NULL;*/
+
+	// Récupération nouveu tableau
 	ppMATMatrice = MATMatriceTempo->ppMATMatrice;
 	MATMatriceTempo = NULL;
+
+	// Mise à jour du nombre nombre de colonne
 	uiMATNbColonne = iNbColonne;
 }
 
@@ -569,7 +554,7 @@ void CMatrice<MType>::MATModifierNombreColonne(int iNbColonne)
 Modifie l'élément ligne uiIndiceLigne et colonne uiIndiceColonne
 *********************************************************
 Entrée: MType MTypeParam : le nouvelle élément à mettre dans la matrice
-Nécessite: (rien)
+Nécessite: (la matrice doit être du même type que MTypeParam)
 Sortie: (rien)
 Entraîne : *(*(ppMATMatrice + uiIndiceColonne) + uiIndiceLigne) = MTypeParam
 *********************************************************/
@@ -577,8 +562,8 @@ template <class MType>
 void CMatrice<MType>::MATModifierElement(int iIndiceLigne, int iIndiceColonne, MType MTypeParam)
 {
 	// Test sur les indices passés en paramètre : l'élément doit pouvoir être dans le tableau
-	if ((unsigned int)iIndiceLigne > MATLireNombreLigne() || (unsigned int)iIndiceColonne > MATLireNombreColonne()
-		|| iIndiceLigne < 0 || iIndiceLigne < 0)
+	if (iIndiceLigne < 0 || iIndiceLigne < 0 || 
+		iIndiceLigne > int(MATLireNombreLigne()) || iIndiceColonne > int(MATLireNombreColonne()))
 	{
 		CException EXCObjet;
 		EXCObjet.EXCmodifier_valeur(dimension_incorrecte);
@@ -591,9 +576,9 @@ void CMatrice<MType>::MATModifierElement(int iIndiceLigne, int iIndiceColonne, M
 Calcul la transposé de la matrice
 *********************************************************
 Entrée: (rien)
-Nécessite: la matrice doit contenir des éléments
+Nécessite: (la matrice doit contenir des éléments)
 Sortie: CMatrice<MType> : la tranposé de la matrice
-Entraîne : (rien)
+Entraîne : (la matrice en sortie est la tranposé de la matrice sur laquelle on travaille)
 *********************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::MATTranspose()
@@ -603,12 +588,12 @@ CMatrice<MType>& CMatrice<MType>::MATTranspose()
 	{
 		// Création de la transposé de la matrice
 		CMatrice<MType>* pMATMatriceTranspose = new CMatrice<MType>(MATLireNombreLigne(), MATLireNombreColonne());
-		for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbColonne; uiBoucleColonne++)
+		for (unsigned int uiBoucleIndiceColonne = 1; uiBoucleIndiceColonne <= uiMATNbColonne; uiBoucleIndiceColonne++)
 		{
-			for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbLigne; uiBoucleLigne++)
+			for (unsigned int uiBoucleIndiceLigne = 1; uiBoucleIndiceLigne <= uiMATNbLigne; uiBoucleIndiceLigne++)
 			{
 				// Inversion des colonnes et des lignes
-				pMATMatriceTranspose->MATModifierElement(uiBoucleLigne,  uiBoucleColonne, MATLireElement(uiBoucleColonne, uiBoucleLigne));
+				pMATMatriceTranspose->MATModifierElement(uiBoucleIndiceLigne, uiBoucleIndiceColonne, MATLireElement(uiBoucleIndiceColonne, uiBoucleIndiceLigne));
 			}
 		}
 		return *pMATMatriceTranspose;
@@ -618,12 +603,12 @@ CMatrice<MType>& CMatrice<MType>::MATTranspose()
 	{
 		// Création de la transposé de la matrice
 		CMatrice<MType>* pMATMatriceTranspose = new CMatrice<MType>(MATLireNombreColonne(), MATLireNombreLigne());
-		for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbLigne; uiBoucleColonne++)
+		for (unsigned int uiBoucleIndiceColonne = 1; uiBoucleIndiceColonne <= uiMATNbLigne; uiBoucleIndiceColonne++)
 		{
-			for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbColonne; uiBoucleLigne++)
+			for (unsigned int uiBoucleIndiceLigne = 1; uiBoucleIndiceLigne <= uiMATNbColonne; uiBoucleIndiceLigne++)
 			{
 				// Inversion des colonnes et des lignes
-				pMATMatriceTranspose->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MATLireElement(uiBoucleColonne, uiBoucleLigne));
+				pMATMatriceTranspose->MATModifierElement(uiBoucleIndiceLigne, uiBoucleIndiceColonne, MATLireElement(uiBoucleIndiceColonne, uiBoucleIndiceLigne));
 			}
 		}
 		return *pMATMatriceTranspose;
@@ -633,12 +618,12 @@ CMatrice<MType>& CMatrice<MType>::MATTranspose()
 	{
 		// Création de la transposé de la matrice
 		CMatrice<MType>* pMATMatriceTranspose = new CMatrice<MType>(MATLireNombreColonne(), MATLireNombreLigne());
-		for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbLigne ; uiBoucleColonne++)
+		for (unsigned int uiBoucleIndiceColonne = 1; uiBoucleIndiceColonne <= uiMATNbLigne ; uiBoucleIndiceColonne++)
 		{
-			for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbColonne; uiBoucleLigne++)
+			for (unsigned int uiBoucleIndiceLigne = 1; uiBoucleIndiceLigne <= uiMATNbColonne; uiBoucleIndiceLigne++)
 			{
 				// Inversion des colonnes et des lignes
-				pMATMatriceTranspose->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MATLireElement(uiBoucleColonne, uiBoucleLigne));
+				pMATMatriceTranspose->MATModifierElement(uiBoucleIndiceLigne, uiBoucleIndiceColonne, MATLireElement(uiBoucleIndiceColonne, uiBoucleIndiceLigne));
 			}
 		}
 		return *pMATMatriceTranspose;
@@ -649,7 +634,7 @@ CMatrice<MType>& CMatrice<MType>::MATTranspose()
 Affiche la matrice dans la console
 *********************************************************
 Entrée: (rien)
-Nécessite: la matrice doit contenir des éléments
+Nécessite: (la matrice doit contenir des éléments)
 Sortie: (rien)
 Entraîne : (la matrice est affiché dans la console)
 *********************************************************/
@@ -657,16 +642,17 @@ template <class MType>
 void CMatrice<MType>::MATAfficherMatrice()
 {
 	// Affichage des dimensions de la matrice
+	///utile?
 	std::cout << "Nombre de colonne de la matrice : " << MATLireNombreColonne() << std::endl;
 	std::cout << "Nombre de ligne de la matrice : " << MATLireNombreLigne() << std::endl;
 
-	for (unsigned int uiBoucleNbLigne = 0; uiBoucleNbLigne < MATLireNombreLigne(); uiBoucleNbLigne++)
+	for (unsigned int uiBoucleIndiceLigne = 1; uiBoucleIndiceLigne <= uiMATNbLigne; uiBoucleIndiceLigne++)
 	{
 		std::cout << "| ";
-		for (unsigned int uiBoucleNbColonne = 0; uiBoucleNbColonne < MATLireNombreColonne(); uiBoucleNbColonne++)
+		for (unsigned int uiBoucleIndiceColonne = 1; uiBoucleIndiceColonne <= uiMATNbColonne; uiBoucleIndiceColonne++)
 		{
 			// Affichage des éléments de la matrice
-			std::cout << MATLireElement(uiBoucleNbLigne + 1, uiBoucleNbColonne + 1) << " ";		
+			std::cout << MATLireElement(uiBoucleIndiceLigne, uiBoucleIndiceColonne) << " ";
 		}
 		std::cout << "|" << std::endl;
 	}
@@ -678,10 +664,10 @@ void CMatrice<MType>::MATAfficherMatrice()
 Surcharge de l'operateur = pour la classe CMatrice<MType>
 prenant un MType en paramètre
 *********************************************************
-Entrée: MType MTypeParam : la matrice à recopier
-Nécessite: Les matrices doivent être du même type
-Sortie: CMatrice<MType> : la matrice recopier à partir de MATMatrice en paramètre
-Entraîne : this = MATMatrice
+Entrée: MType MTypeParam : la matrice à affecter
+Nécessite: (Les matrices sont du même type)
+Sortie: CMatrice<MType> : la matrice affecter à partir de MATMatrice en paramètre
+Entraîne : (MATMatrice est affecter à la matrice sur laquelle on travaille)
 *********************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator=(CMatrice<MType>& MATMatrice)
@@ -707,14 +693,15 @@ Surcharge de l'operateur + pour la classe CMatrice<MType>
 prenant un CMatrice<MType> en paramètre
 *********************************************************
 Entrée: CMatrice<MType>& MATMatrice : la matrice à additionner
-Nécessite: Les deux matrices ont les mêmes dimensions
-Sortie: CMatrice<MType> MATMatrice : la somme des deux matrices
-Entraîne :
+Nécessite: (Les matrices sont du même type)
+Sortie: CMatrice<MType> : la somme des deux matrices
+Entraîne :(la matrice en sortie est la somme des deux matrices)
+ou (Exception dim_matrice_diff levé)
 *********************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator+(CMatrice<MType>& MATMatrice)
 {
-	// Test des dimensions des matrices
+	// Vérification faisabilité somme
 	if (MATMatrice.MATLireNombreColonne() != MATLireNombreColonne() || MATMatrice.MATLireNombreLigne() != MATLireNombreLigne())
 	{
 		CException EXCLevee;
@@ -740,14 +727,15 @@ Surcharge de l'operateur - pour la classe CMatrice<MType>
 prenant un CMatrice<MType> en paramètre
 *********************************************************
 Entrée: CMatrice<MType>& MATMatrice : la matrice à soustraire
-Nécessite: Les deux matrices ont les mêmes dimensions
-Sortie: CMatrice<MType> MATMatrice : la différence des deux matrices
-Entraîne :
+Nécessite: (Les matrices sont du même type)
+Sortie: CMatrice<MType> : la différence des deux matrices
+Entraîne : (la matrice en sortie est la différence des deux matrices)
+ou (Exception dim_matrice_diff levé)
 *********************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator-(CMatrice<MType>& MATMatrice)
 {
-	// Test des dimensions des matrices
+	// Vérification faisabilité différence
 	if (MATMatrice.MATLireNombreColonne() != MATLireNombreColonne() || MATMatrice.MATLireNombreLigne() != MATLireNombreLigne())
 	{
 		CException EXCLevee;
@@ -773,14 +761,15 @@ Surcharge de l'operateur * pour la classe CMatrice<MType>
 prenant un CMatrice<MType> en paramètre
 *********************************************************
 Entrée: CMatrice<MType>& MATMatrice : la matrice à multiplier
-Nécessite: Le nombre de colonne de la matrice appelante dois être égale au nombre de colonne de la matrice en paramètre
-Sortie: CMatrice<MType> MATMatrice : le produit des deux matrices
-Entraîne :
+Nécessite: (Les matrices sont du même type)
+Sortie: CMatrice<MType> : le produit des deux matrices
+Entraîne : (La matrice en sortie est le produit matricielle des deux matrices)
+ou (Exception dimension_incorrecte est levé)
 *********************************************************/
 template <class MType>
 CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType>& MATMatrice)
 {
-	// Test des dimensions des matrices
+	// Vérification faisabilité produit matricielle
 	if (MATMatrice.MATLireNombreLigne() != MATLireNombreColonne())
 	{
 		CException EXCLevee;
@@ -798,6 +787,7 @@ CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType>& MATMatrice)
 			MType MTypeSomme = 0;
 			for (unsigned int uiBoucleProduit = 1; uiBoucleProduit <= uiMATNbColonne; uiBoucleProduit++)
 			{
+				// On somme la uiBoucleProduit-ième ligne de la première matrice avec la uiBoucleProduit-iéme colonne de la matrice en paramètre
 				MTypeSomme = MTypeSomme + MATLireElement(uiBoucleLigne, uiBoucleProduit) * MATMatrice.MATLireElement(uiBoucleProduit, uiBoucleColonne);
 			}
 			pMATMatriceProduit->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MTypeSomme);
@@ -812,21 +802,21 @@ Surcharge de l'operateur * pour la classe CMatrice<MType>
 prenant un MType en paramètre
 *********************************************************
 Entrée: MType MTypeParam : la constante multiplicative
-Nécessite: La matrice doit être du même type que MTypeParam
-Sortie: CMatrice<MType> MATMatrice : le produit de la matrice pour MTypeParam
-Entraîne :
+Nécessite: (La matrice doit être du même type que MTypeParam)
+Sortie: CMatrice<MType> : le produit de la matrice pour MTypeParam
+Entraîne :(tous les éléments de la matrice en sortie sont multipliés par MTypeParam)
 *********************************************************/
 template <class MType>
-CMatrice<MType>& CMatrice<MType>::operator*(MType MTypeParam)
+CMatrice<MType>& CMatrice<MType>::operator*(const MType MTypeParam)
 {
 	// Allocation du résulat du produit : initialisé par recopie
 	CMatrice<MType>* pMATMatriceProduitCoeff = new CMatrice<MType>(*this);
-	for (unsigned int uiBoucleColonne = 0; uiBoucleColonne < uiMATNbColonne; uiBoucleColonne++)
+	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbColonne; uiBoucleColonne++)
 	{
-		for (unsigned int uiBoucleLigne = 0; uiBoucleLigne < uiMATNbLigne; uiBoucleLigne++)
+		for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbLigne; uiBoucleLigne++)
 		{
 			// Calcul du produit : pour chaque élément de la matrice
-			pMATMatriceProduitCoeff->MATModifierElement(uiBoucleLigne + 1, uiBoucleColonne + 1, MTypeParam * MATLireElement(uiBoucleLigne + 1, uiBoucleColonne + 1));
+			pMATMatriceProduitCoeff->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MTypeParam * MATLireElement(uiBoucleLigne, uiBoucleColonne));
 		}
 	}
 	return *pMATMatriceProduitCoeff;
@@ -837,15 +827,15 @@ Surcharge de l'operateur / pour la classe CMatrice<MType>
 prenant un MType en paramètre
 *********************************************************
 Entrée: MType MTypeParam : la constante dividende
-Nécessite: La matrice doit être du même type que MTypeParam
-Sortie: CMatrice<MType> MATMatrice : le quotient de la matrice pour MTypeParam
-Entraîne : (tous les éléments de la matrice en sortie sont divisé par MTypeParam)
-ou (Levee l'exception diviseur_nul
+Nécessite: (La matrice doit être du même type que MTypeParam)
+Sortie: CMatrice<MType> : le quotient de la matrice pour MTypeParam
+Entraîne : (tous les éléments de la matrice en sortie sont divisés par MTypeParam)
+ou (Exception diviseur_nul est levé)
 *********************************************************/
 template <class MType>
-CMatrice<MType>& CMatrice<MType>::operator/(MType MTypeParam)
+CMatrice<MType>& CMatrice<MType>::operator/(const MType MTypeParam)
 {
-	// Divison par 0 interdis
+	// Vérification diviseur non nul
 	if (MTypeParam == 0)
 	{
 		CException EXCLevee;
@@ -855,12 +845,12 @@ CMatrice<MType>& CMatrice<MType>::operator/(MType MTypeParam)
 
 	// Allocation du résulat de la division : initialisé par recopie
 	CMatrice<MType>* pMATMatriceProduitCoeff = new CMatrice<MType>(*this);
-	for (unsigned int uiBoucleColonne = 0; uiBoucleColonne < uiMATNbColonne; uiBoucleColonne++)
+	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbColonne; uiBoucleColonne++)
 	{
-		for (unsigned int uiBoucleLigne = 0; uiBoucleLigne < uiMATNbLigne; uiBoucleLigne++)
+		for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbLigne; uiBoucleLigne++)
 		{
 			// Calcul de la division : pour chaque élément de la matrice
-			pMATMatriceProduitCoeff->MATModifierElement(uiBoucleLigne + 1, uiBoucleColonne + 1, MATLireElement(uiBoucleLigne + 1, uiBoucleColonne + 1) / MTypeParam);
+			pMATMatriceProduitCoeff->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MATLireElement(uiBoucleLigne, uiBoucleColonne) / MTypeParam);
 		}
 	}
 	return *pMATMatriceProduitCoeff;
