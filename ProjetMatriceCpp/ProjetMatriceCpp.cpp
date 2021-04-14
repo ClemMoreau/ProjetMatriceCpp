@@ -2,123 +2,167 @@
 #include "CException.h"
 #include "CMatrice.h"
 #include "CParser.h"
+using namespace std;
 
-int main()
+int main(int argc, char *argv[])
 {
+	CParser PARParser;
+	PARParser.PARModifierNomFichier("C:/Users/cleme/Downloads/new 2.txt");
+	cout << "TEST : " << PARParser.PARLireNomFichier() << endl << endl;
+	PARParser.PARLireFichier();
 	/* test de bibi pour le parsage jarrive pas à lancer la fonction lirre fichier */
 
-	/*
-	const char *psPARNomFichier = "ProjetMatriceCpp/Fichiers de resources/monq.txt";
-	CParser PARLireFichier(psPARNomFichier);
-	cout << "ntm";
-	*/
-	//entiers
-	CMatrice<float> MATMatrice(3,3);
-	float k = 0;
-	for (int i = 1; i < 4; i++)
-	{
-		for (int j = 1; j < 4; j++,k++)
-		{
-			MATMatrice.MATModifierElement(i, j, k);
-		}
-	}
-
-	MATMatrice.MATAfficherMatrice();
-	(MATMatrice / 2).MATAfficherMatrice();
-	(MATMatrice * 2).MATAfficherMatrice();
-	(MATMatrice + MATMatrice).MATAfficherMatrice();
-	(MATMatrice - MATMatrice).MATAfficherMatrice();
-	(MATMatrice * MATMatrice).MATAfficherMatrice();
-
-	std::cout << "MATMatrice" << std::endl;
-	MATMatrice.MATAfficherMatrice();
-	CMatrice<float> MATMatrice2(3, 3);
-	for (int i = 1; i < 4; i++)
-	{
-		for (int j = 1; j < 4; j++, k++)
-		{
-			MATMatrice2.MATModifierElement(i, j, k);
-		}
-	}
-	std::cout << "MATMatrice2" << std::endl;
-	MATMatrice2.MATAfficherMatrice();
-	CMatrice<float> MATMatrice3(3, 3);
-	for (int i = 1; i < 4; i++)
-	{
-		for (int j = 1; j < 4; j++, k++)
-		{
-			MATMatrice3.MATModifierElement(i, j, k);
-		}
-	}
-	std::cout << "MATMatrice3" << std::endl;
-	MATMatrice3.MATAfficherMatrice();
-
-	CMatrice<float>* pMATMatriceTab = new CMatrice<float>[3];
-	pMATMatriceTab[0] = MATMatrice;
-	pMATMatriceTab[1] = MATMatrice2;
-	pMATMatriceTab[2] = MATMatrice3;
-	pMATMatriceTab[0].MATAfficherMatrice();
-	pMATMatriceTab[1].MATAfficherMatrice();
-	pMATMatriceTab[2].MATAfficherMatrice();
 	
-}
-/* mettre des return 1 à chaque erreur, puis tester avec des boucles whiles et mettres des messages pour guider utilisateur (ce qu'il se passe/ ce qu'il doit faire)
-using namespace std;
-	//Lecture fichier
+	
+
+
+
+
+
+	/* Fonction principale */
+	/*CParser PARParser;
+	double dFin;
+	if (argc < 2)
+	{
+		cerr << "Vous n'avez pas entrer de nom de fichier" << endl;
+		cout << "Veuillez entrer quelque chose puis appuyer sur entree..." << endl;
+		cin >> dFin;
+		return 1;
+	}
+
+	// Lecture fichier
 	CMatrice<double>* pMATTableauMatrice = new CMatrice<double>[argc - 1];
 
-	//Demander utilisateur valeur
+	try
+	{
+		for (int iBoucleInit = 0; iBoucleInit < argc - 1; iBoucleInit++)
+		{	
+			PARParser.PARModifierNomFichier(argv[iBoucleInit]);
+			//pMATTableauMatrice[iBoucleInit] = PARParser.PARLireFichier();
+			//Affiché matrice?
+		}
+	}
+	catch (CException EXCLevee)
+	{
+		cerr << "Les matrices ne sont pas du type double" << endl;
+		cout << "Veuillez entrer quelque chose puis appuyer sur entree pour quitter..." << endl;
+		cin >> dFin;
+		return 1;
+	}
 
-		double dConstante;
-		cout << "Veuillez entrer une valeur ";
+		//Demander utilisateur valeur
+
+	double dConstante;
+
+	cout << "Veuillez entrer un nombre : ";
+	cin >> dConstante;
+	while (cin.fail())
+	{
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		cout << "Vous n'avez pas saisi un nombre, veuillez recommencer. " << endl << "Veuillez entrer un nombre : ";
 		cin >> dConstante;
-		while(cin.fail())
-		{
+	}
 
-		///initialiser la matrice de résultats par consteur de base (si galère pas faire de stockage)
+	cout << endl << "Vous avez saisie " << dConstante << " pour la multiplication et la division des matrices par une constante." << endl;
+	
+	CMatrice<double> MATResultats;
+
 	// Affichage du résultat de la multiplication de chaque matrice par dConstante
-
-		///Boucle pour i allant de 0 à argc - 1
-			///resultat = tabMat[i] * dConstante;
-			///resultat.afficher
+	cout << "MULTIPLICATION PAR " << dConstante << " DES MATRICES :" << endl;
+	for (int iBoucleMultiplication = 0; iBoucleMultiplication < argc - 1; iBoucleMultiplication++)
+	{
+		MATResultats = pMATTableauMatrice[iBoucleMultiplication] * dConstante;
+		MATResultats.MATAfficherMatrice();
+	}
 
 	// Affichage du résultat de la division de chaque matrice par dConstante
-		///try catch si la constante est nulle (contenant la ligne de calcul)
-			///Boucle pour i allant de 0 à argc - 1
-				///resultat = tabMat[i] / dConstante;
-				///resultat.afficher
+	cout << "DIVISION PAR " << dConstante << " DES MATRICES :" << endl;
+	try 
+	{
+		for (int iBoucleDivision = 0; iBoucleDivision < argc - 1; iBoucleDivision++)
+		{
+			MATResultats = pMATTableauMatrice[iBoucleDivision] / dConstante;
+			MATResultats.MATAfficherMatrice();
+		}
+	}
+	catch (CException EXCLevee)
+	{
+		cerr << "Divsion par 0 impossible !" << endl;
+	}
+	
+	if (argc == 2)
+	{
+		cout << "Vous n'avez passé qu'un seul fichier au programme, la suite du programme n'est donc pas disponible !" << endl;
+		cout << "Veuillez entrer quelque chose puis appuyer sur entree pour quitter..." << endl;
+		cin >> dFin;
+		return 1;
+	}
+	
+	if (argc > 2)
+	{
+		CMatrice<double> MATCalculs = pMATTableauMatrice[0];
 
-		/// si argc == 2 alors message car suite programme impossible puis return
-
-	// Affichage du résultat de la somme de toutes les matrices
-		///try catch si les dimensions ne sont pas identiques (contenant la ligne de calcul)
-			///Boucle pour i allant de 0 à argc - 1
-				///resultat += tabMat[i];
-				///resultat.afficher
-
-	// Affichage du résultat de la somme alternée de toutes les matrices (-1)^n
-		///try catch si les dimensions ne sont pas identiques (contenant la ligne de calcul)
-			///Boucle pour i allant de 0 à argc - 1
-				/// si i est pair
-					///resultat += tabMat[i];
-					///resultat.afficher
-				/// si i est impair
-					///resultat -= tabMat[i];
-					///resultat.afficher
-
-	// Affichage du résultat des produits matricielles (demandez si faut faire toutes les combinaisons possibles ou un seul gros produit mat)
-		///try catch si les produits ne sont pas possible (contenant la ligne de calcul)
-			///( si combinaison)
-				///Boucle pour i allant de 0 à argc - 1
-					///Boucle pour j allant de 0 à argc - 1
-						///resultat = tabMat[i] * tabMat[j];
-						///resultat.afficher
-			///( si produit totale)
-				///Boucle pour i allant de 0 à argc - 1
-					///resultat *= tabMat[i];
-					///resultat.afficher
+		// Affichage du résultat de la somme de toutes les matrices
+		try
+		{
+			cout << "SOMME DES MATRICES : M1+M2+..." << endl;
+			for (int iBoucleAddition = 1; iBoucleAddition < argc - 1; iBoucleAddition++)
+			{
+				MATCalculs = MATCalculs + pMATTableauMatrice[iBoucleAddition];
+			}
+			MATCalculs.MATAfficherMatrice();
+		}
+		catch (CException EXCLevee)
+		{
+			cout << "Somme impossible : les dimensions des matrices sont differentes !" << endl;
+		}
 		
+		// Affichage du résultat de la somme alternée de toutes les matrices (-1)^n
+		try
+		{
+			cout << "SOMME ALTERNEE DES MATRICES : M1+M2+..." << endl;
+			MATCalculs = pMATTableauMatrice[0];
+			int iBool = 0;
+			for (int iBoucleSommeAlt = 1; iBoucleSommeAlt < argc - 1; iBoucleSommeAlt++, iBool++)
+			{
+				// si iBoucleSommeAlt est pair
+				if (iBool % 2 == 0)
+				{
+					MATCalculs = MATCalculs + pMATTableauMatrice[iBoucleSommeAlt];
+				}
+				// sinon iBoucleSommeAlt est impair
+				else
+				{
+					MATCalculs = MATCalculs - pMATTableauMatrice[iBoucleSommeAlt];
+				}
+			}
+			MATCalculs.MATAfficherMatrice();
+		}
+		catch (CException EXCLevee)
+		{
+			cerr << "Somme alternee impossible : les dimensions des matrices sont differentes !" << endl;
+		}
 
-//
+		// Affichage du résultat des produits matricielles
+		try
+		{
+			cout << "PRODUIT DES MATRICES : M1*M2*..." << endl;
+			MATCalculs = pMATTableauMatrice[0];
+			for (int iBoucleAddition = 1; iBoucleAddition < argc - 1; iBoucleAddition++)
+			{
+				MATCalculs = MATCalculs * pMATTableauMatrice[iBoucleAddition];
+			}
+			MATCalculs.MATAfficherMatrice();
+		}
+		catch (CException EXCLevee)
+		{
+			cout << "Produit matricielle impossible : les dimensions des matrices ne correspondent pas !" << endl;
+		}
 
-*/
+		cout << "Toutes les operations sont terminees !" << endl;
+		cout << "Veuillez entrer quelque chose puis appuyer sur entree pour quitter..." << endl;
+		cin >> dFin;
+	}*/
+	return 0;
+}					

@@ -1,9 +1,12 @@
 #ifndef PAR
 #define PAR 0
+
 #include <stdio.h>
 #include "CMatrice.h"
-#include <iostream>
-#include <cstring>
+#include "CException.h"
+#include<iostream>
+#include<cstring>
+#include<fstream>
 
 using namespace std;
 
@@ -45,7 +48,7 @@ public:
 		Paramètre en entrée : sNomFichier --> Le nom du fichier
 		Paramètre en sortie : Le nom du fichier modifié
 	*/
-	void PARModifierNomFichier(char* sNomFichier);
+	void PARModifierNomFichier(const char* sNomFichier);
 
 	/*
 		Lecture du fichier
@@ -53,15 +56,14 @@ public:
 		Vérification Taille
 		Stockage des infos essentiel dans un objet CMatrice
 	*/
-	template <class MType> CMatrice<MType> PARLireFichier();
+	CMatrice<double>& PARLireFichier();
 };
 
-template <class MType>
-CMatrice<MType> CParser::PARLireFichier()
-{
-	
-	cout << "laisse moi dormir zeubi";
-	if (psPARNomFichier == NULL)
+//CMatrice<double> CParser::PARLireFichier()
+//{
+
+	//cout << "laisse moi dormir zeubi" << endl;
+	/*if (psPARNomFichier == NULL)
 	{
 		std::cout << "Erreur fichier inexistant !" << std::endl;
 	}
@@ -70,24 +72,24 @@ CMatrice<MType> CParser::PARLireFichier()
 	pfFichier = fopen(psPARNomFichier, "r");
 
 	//Déclaration des variables
-	char cType[];
-	char cNbLignes[];
-	char cNbColonnes[];
-	char cIgnore[];
+	char *cType;
+	char *cNbLignes;
+	char *cNbColonnes;
+	char *cIgnore;
 	unsigned int uiNbColonnes;
 	unsigned int uiNbLignes;
 	char* pcType;
-	char cdelim[] = "=";
+	char cdelim = '=';
 	double* dValeur;
 
-
+	*/
 	/*
 		Sortie : Donné récupéré depuis le fichier si fichier respecte la nomenclature
 		But : On récupère le type et le nb de lignes et de colonnes avec fscanf
 			On utilise strtok pour récupérer ce qu'il y a aprés les espaces.
 	*/
-	
-	if (pfFichier == NULL)
+
+	/*if (pfFichier == NULL)
 	{
 		std::cout << "Erreur d'ouverture du fichier en lecture" << std::endl;
 	}
@@ -128,24 +130,25 @@ CMatrice<MType> CParser::PARLireFichier()
 
 		//boucle permettant la récupération et le stockage des valeurs de la matrice
 		// strcpy(destination de la copie, source de la copie)
-		for (unsigned int uiIndiceBoucleScan; uiIndiceBoucleScan <= uiNbLignes;++uiIndiceBoucleScan) 
+		for (unsigned int uiIndiceBoucleScan; uiIndiceBoucleScan <= uiNbLignes;++uiIndiceBoucleScan)
 		{
 			fscanf(pfFichier, '%s', dValeur);
 		}
 		for (unsigned int uiIndiceBoucleCopy; uiIndiceBoucleCopy < uiNbLignes; uiIndiceBoucleCopy += uiIndiceBoucleCopy)
 		{
-			// à revoir comment définir une matrice comme destinataire 
+			// à revoir comment définir une matrice comme destinataire
 			strcpy(CMatrice, dValeur);
 		}
-		
+
 		//fermeture du fichier
-		fclose(pfFichier);*/
+		fclose(pfFichier);
 	}
 
 	//on veut récupérer les lignes du fichier et les stocker dans une matrice CMatrice
 
 	//fscanf(fichier, %s, )
-	return NULL; 
-}
+	CMatrice<double> MATMatrice;
+	return MATMatrice;*/
+//}
 
 #endif //PAR
