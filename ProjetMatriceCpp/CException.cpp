@@ -54,15 +54,15 @@ Nécessite:	uiValeur > 0
 Sortie: (rien)
 Entraîne :	this.uiEXCValeur = uiValeur
 *********************************************************/
-void CException::EXCmodifier_valeur(int uiValeur)
+void CException::EXCmodifier_valeur(int iValeur)
 {
-	if (uiValeur < 0)
+	if (iValeur < 0)
 	{
 		CException EXCObjet;
 		EXCObjet.EXCmodifier_valeur(valeur_negative);
 		throw(EXCObjet);
 	}
-	uiEXCvaleur = uiValeur;
+	uiEXCvaleur = iValeur;
 }
 
 /*********************************************************
@@ -73,7 +73,7 @@ Nécessite:	(rien)
 Sortie: int : le code de l'exception à levé
 Entraîne :	(rien)
 *********************************************************/
-int CException::EXClire_valeur()
+unsigned int CException::EXClire_valeur()
 {
 	return uiEXCvaleur;
 }
