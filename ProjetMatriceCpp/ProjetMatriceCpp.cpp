@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
 		try
 		{
 			cout << "SOMME DES MATRICES : M1+M2+..." << endl;
-			for (int iBoucleAddition = 0; iBoucleAddition < argc - 1; iBoucleAddition++)
+			for (int iBoucleAddition = 1; iBoucleAddition < argc - 1; iBoucleAddition++)
 			{
 				MATCalculs = MATCalculs + pMATTableauMatrice[iBoucleAddition];
 			}
@@ -114,6 +114,7 @@ int main(int argc, char *argv[])
 		// Affichage du résultat de la somme alternée de toutes les matrices (-1)^n
 		try
 		{
+			CMatrice<double> MATCalculs = pMATTableauMatrice[0];
 			cout << "SOMME ALTERNEE DES MATRICES : M1-M2+..." << endl;
 			MATCalculs = pMATTableauMatrice[0];
 			int iBool = 1;
