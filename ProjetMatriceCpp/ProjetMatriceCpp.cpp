@@ -5,13 +5,8 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	/*CParser PARParser;
-	PARParser.PARModifierNomFichier("C:/Users/cleme/Downloads/new 2.txt");
-	cout << "TEST : " << PARParser.PARLireNomFichier() << endl << endl;
-	PARParser.PARLireFichier();*/
-	
-
 	/* Fonction principale */
+
 	CParser PARParser;
 	double dFin;
 	if (argc < 2)
@@ -22,16 +17,18 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	// Lecture fichier
+	// Lecture fichiers
 	CMatrice<double>* pMATTableauMatrice = new CMatrice<double>[argc - 1];
 
 	try
 	{
-		for (int iBoucleInit = 0; iBoucleInit < argc - 1; iBoucleInit++)
+		// Pour fichier, on créer la matrice correspondantes et l'affiche à l'écran
+		for (int iBoucleInit = 1; iBoucleInit < argc; iBoucleInit++)
 		{	
 			PARParser.PARModifierNomFichier(argv[iBoucleInit]);
-			//pMATTableauMatrice[iBoucleInit] = PARParser.PARLireFichier();
-			//Affiché matrice?
+			pMATTableauMatrice[iBoucleInit - 1] = PARParser.PARLireFichier();
+			cout << "Matrice du fichier " << PARParser.PARLireNomFichier() << " :" << endl;
+			pMATTableauMatrice[iBoucleInit - 1].MATAfficherMatrice();
 		}
 	}
 	catch (CException EXCLevee)
@@ -42,29 +39,32 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-		//Demander utilisateur valeur
-
+	// On demande à l'utilisateur de rentré une valeur pour la suite du programme
 	double dConstante;
 
 	cout << "Veuillez entrer un nombre : ";
 	cin >> dConstante;
+
+	// L'utilisateur recommence jusqu'à entrer un choix valide ou si il quitte le programme
 	while (cin.fail())
 	{
 		cin.clear();
 		cin.ignore(numeric_limits<streamsize>::max(), '\n');
-		cout << "Vous n'avez pas saisi un nombre, veuillez recommencer. " << endl << "Veuillez entrer un nombre : ";
+		cerr << "Vous n'avez pas saisi un nombre, veuillez recommencer. " << endl << "Veuillez entrer un nombre : ";
 		cin >> dConstante;
 	}
 
-	cout << endl << "Vous avez saisie " << dConstante << " pour la multiplication et la division des matrices par une constante." << endl;
+	cout << "Vous avez saisie " << dConstante << " pour la multiplication et la division des matrices par une constante." << endl;
 	
+	// Matrice contenant le résulats des différentes opérations
 	CMatrice<double> MATResultats;
 
 	// Affichage du résultat de la multiplication de chaque matrice par dConstante
-	cout << "MULTIPLICATION PAR " << dConstante << " DES MATRICES :" << endl;
+	cout << endl << "MULTIPLICATION PAR " << dConstante << " DES MATRICES :" << endl;
 	for (int iBoucleMultiplication = 0; iBoucleMultiplication < argc - 1; iBoucleMultiplication++)
 	{
 		MATResultats = pMATTableauMatrice[iBoucleMultiplication] * dConstante;
+		cout << "Matrice " << iBoucleMultiplication << " :" << endl;
 		MATResultats.MATAfficherMatrice();
 	}
 
@@ -75,12 +75,13 @@ int main(int argc, char *argv[])
 		for (int iBoucleDivision = 0; iBoucleDivision < argc - 1; iBoucleDivision++)
 		{
 			MATResultats = pMATTableauMatrice[iBoucleDivision] / dConstante;
+			cout << "Matrice " << iBoucleDivision << " :" << endl;
 			MATResultats.MATAfficherMatrice();
 		}
 	}
 	catch (CException EXCLevee)
 	{
-		cerr << "Divsion par 0 impossible !" << endl;
+		cerr << "Divsion par 0 impossible !" << endl << endl;
 	}
 	
 	if (argc == 2)
@@ -88,7 +89,7 @@ int main(int argc, char *argv[])
 		cout << "Vous n'avez passé qu'un seul fichier au programme, la suite du programme n'est donc pas disponible !" << endl;
 		cout << "Veuillez entrer quelque chose puis appuyer sur entree pour quitter..." << endl;
 		cin >> dFin;
-		return 1;
+		return 0;
 	}
 	
 	if (argc > 2)
@@ -99,7 +100,7 @@ int main(int argc, char *argv[])
 		try
 		{
 			cout << "SOMME DES MATRICES : M1+M2+..." << endl;
-			for (int iBoucleAddition = 1; iBoucleAddition < argc - 1; iBoucleAddition++)
+			for (int iBoucleAddition = 0; iBoucleAddition < argc - 1; iBoucleAddition++)
 			{
 				MATCalculs = MATCalculs + pMATTableauMatrice[iBoucleAddition];
 			}
@@ -107,15 +108,15 @@ int main(int argc, char *argv[])
 		}
 		catch (CException EXCLevee)
 		{
-			cout << "Somme impossible : les dimensions des matrices sont differentes !" << endl;
+			cout << "Somme impossible : les dimensions des matrices sont differentes !" << endl << endl;
 		}
 		
 		// Affichage du résultat de la somme alternée de toutes les matrices (-1)^n
 		try
 		{
-			cout << "SOMME ALTERNEE DES MATRICES : M1+M2+..." << endl;
+			cout << "SOMME ALTERNEE DES MATRICES : M1-M2+..." << endl;
 			MATCalculs = pMATTableauMatrice[0];
-			int iBool = 0;
+			int iBool = 1;
 			for (int iBoucleSommeAlt = 1; iBoucleSommeAlt < argc - 1; iBoucleSommeAlt++, iBool++)
 			{
 				// si iBoucleSommeAlt est pair
@@ -133,7 +134,7 @@ int main(int argc, char *argv[])
 		}
 		catch (CException EXCLevee)
 		{
-			cerr << "Somme alternee impossible : les dimensions des matrices sont differentes !" << endl;
+			cerr << "Somme alternee impossible : les dimensions des matrices sont differentes !" << endl << endl;
 		}
 
 		// Affichage du résultat des produits matricielles
@@ -149,9 +150,10 @@ int main(int argc, char *argv[])
 		}
 		catch (CException EXCLevee)
 		{
-			cout << "Produit matricielle impossible : les dimensions des matrices ne correspondent pas !" << endl;
+			cout << "Produit matricielle impossible : les dimensions des matrices ne correspondent pas !" << endl << endl;
 		}
 
+		// Fin du programme
 		cout << "Toutes les operations sont terminees !" << endl;
 		cout << "Veuillez entrer quelque chose puis appuyer sur entree pour quitter..." << endl;
 		cin >> dFin;

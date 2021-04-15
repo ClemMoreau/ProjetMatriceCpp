@@ -4,6 +4,7 @@
 
 #define nom_null 201
 #define mauvais_type 202
+#define ouverture_fichier_impossible 203
 
 CParser::CParser()
 {
@@ -66,8 +67,13 @@ CMatrice<double>& CParser::PARLireFichier()
 	if (!fFichier)
 	{
 		/* On teste si l'ouverture c'est bien déroulé */
+		CException EXCFichier;
+		EXCFichier.EXCmodifier_valeur(ouverture_fichier_impossible);
+		throw(EXCFichier);
 	}
 	
+	// variable utilisé pour léver une execption si le type n'est pas du bon type
+	char cTypeTest[] = "double";
 	/* 
 		cdelim est notre séparateur
 		Utilisé pour la fonction strtok() 	   
@@ -80,7 +86,7 @@ CMatrice<double>& CParser::PARLireFichier()
 	char cType[100], cNbLignes[100], cNbColonnes[100], cIgnore[200], cMatElement[200];
 
 	/*
-		pointeur sur des chaine de caracyère qui vont contenir les infos importantes extraites
+		pointeur sur des chaine de caractère qui vont contenir les infos importantes à extraire
 	*/
 	char *pcType = NULL, *pcNbLignes = NULL, *pcNbColonnes = NULL;
 
@@ -132,13 +138,15 @@ CMatrice<double>& CParser::PARLireFichier()
 	/*
 		On lève l'exception sur le Type	
 	*/
-	if (pcType != "double")
-	{
-		cout << "Vous avez rentre un type invalide" << endl;
-		CException EXCType;
-		EXCType.EXCmodifier_valeur(mauvais_type);
-		throw(EXCType);
-	}
+		
+	for (int iBoucleTest = 0; iBoucleTest < int(strlen(pcType)); iBoucleTest++)
+		if (pcType[iBoucleTest] != cTypeTest[iBoucleTest])
+		{
+			cerr << "Vous avez rentre un type invalide" << endl;
+			CException EXCType;
+			EXCType.EXCmodifier_valeur(mauvais_type);
+			throw(EXCType);
+		}
 	
 	/******Si type est valide on récupère les composant de la matrice*******/
 
@@ -159,10 +167,11 @@ CMatrice<double>& CParser::PARLireFichier()
 		{
 			fFichier >> cMatElement;
 			double dMatElement = atoi(cMatElement);
+			///tester un try/catch ici
 			pMATMatrice->MATModifierElement(uiBoucleLigne,uiBoucleColonne, dMatElement);
 		}
 	}
-	pMATMatrice->MATAfficherMatrice();
+	//pMATMatrice->MATAfficherMatrice();
 
 	return *pMATMatrice;
 

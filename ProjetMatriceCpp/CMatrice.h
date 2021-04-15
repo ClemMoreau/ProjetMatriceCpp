@@ -1,5 +1,6 @@
 #ifndef MAT
 #define MAT 0
+
 #include <stdio.h>
 #include "CException.h"
 
@@ -10,6 +11,11 @@
 template <class MType> class CMatrice
 {
 private:
+
+				/*************
+				 * ATTRIBUTS *
+				 *************/
+
 	/*Nombre de lignes de la matrice */
 	unsigned int uiMATNbLigne; 
 
@@ -18,35 +24,24 @@ private:
 
 	/*
 	* Contenu de la matrice : [1;uiMATNbLigne]x[1;uiMATNbColonne]
-	* Il faut donc utiliser les indices mathématiques d'une matrice 
+	* Il faut utiliser les indices mathématiques d'une matrice 
 	* et non les indices d'un tableau en C 
-	* (la colonne/ligne 0 n'existe pas dans nos matrice sauf durant l'initialisation)
 	*/
 	MType **ppMATMatrice;
 
 public:
-	/*CONSTRUCTEURS*/
-
+					/*****************
+					 * CONSTRUCTEURS *
+					 *****************/
+	 
 	/*********************************************************
 	Constructeur par défaut de la classe CMatrice
-	*********************************************************
-	Entrée: (rien)
-	Nécessite:	(rien)
-	Sortie: (rien)
-	Entraîne :	L'objet est initialisé avec uiMATNbLigne = 0
-	uiMATNbColonne = 0 et **ppMATMatrice = NULL
 	*********************************************************/
 	CMatrice<MType>();
 
 	/*********************************************************
 	Constructeur de recopie de la classe CMatrice 
 	prenant en paramètre un CMatrice<MType> 
-	*********************************************************
-	Entrée: CMatrice<MType>& MATMatrice : la matrice à recopier
-	Nécessite:	CMatrice<MType>& MATMatrice dois être initialisé
-	Sortie: (rien)
-	Entraîne :	L'objet est initialisé à partir des attributs
-	de MATMatrice en paramètre
 	*********************************************************/
 	CMatrice<MType>(CMatrice<MType>& MATMatrice);
 
@@ -54,163 +49,95 @@ public:
 	Constructeur de recopie de la classe CMatrice
 	prenant en paramètre le nombre de ligne et de colonne
 	de la matrice à créer
-	*********************************************************
-	Entrée: CMatrice<MType>& MATMatrice : la matrice à recopier
-	Nécessite:	CMatrice<MType>& MATMatrice dois être initialisé
-	Sortie: (rien)
-	Entraîne :	L'objet initialisé est une matrice 
-	de taille (uiMATNbLigne x uiNbColonne) dont le contenu est initialisé par le compilateur
 	*********************************************************/
 	CMatrice<MType>(int iNbLigne, int iNbColonne);
 
-	/*DESTRUCTEUR*/
+				   /***************
+					* DESTRUCTEUR *
+					***************/
 
 	/*********************************************************
 	Destructeur de la classe CMatrice
-	*********************************************************
-	Entrée: (rien)
-	Nécessite:	(rien)
-	Sortie: (rien)
-	Entraîne :	L'objet est prêt à être détruit, 
-	les derniers traitements sont réalisé
 	*********************************************************/
 	~CMatrice<MType>();
 
-	/*GETTERS*/
+					   /***********
+						* GETTERS *
+						***********/
 
 	/*********************************************************
 	Renvoie le nombre de ligne de la matrice
-	*********************************************************
-	Entrée: (rien)
-	Nécessite:	(rien)
-	Sortie: unsigned int uiMATNbLigne : le nombre de ligne de la matrice
-	Entraîne :	(rien)
 	*********************************************************/
 	unsigned int MATLireNombreLigne();
 
 	/*********************************************************
 	Renvoie le nombre de colonne de la matrice
-	*********************************************************
-	Entrée: (rien)
-	Nécessite:	(rien)
-	Sortie: unsigned int uiMATNbColonne : le nombre de colonne de la matrice
-	Entraîne :	(rien)
 	*********************************************************/
 	unsigned int MATLireNombreColonne();
 
 	/*********************************************************
 	Renvoie l'élément ligne uiIndiceLigne et colonne uiIndiceColonne
-	*********************************************************
-	Entrée: (rien)
-	Nécessite:	(uiIndiceColonne <= uiMATNbColonne) et (uiIndiceLigne <= uiMATNbLigne)				//voir si pré ou post condition (perso je pref post)
-	Sortie: <MType> *(*(ppMATMatrice + uiIndiceColonne) + uiIndiceLigne) : à compléter
-	Entraîne :	uiMATNbColonne = nombre de colonne de la matrice
 	*********************************************************/
 	MType MATLireElement(int iIndiceLigne, int iIndiceColonne);
 
-	/*SETTERS*/
+					   /***********
+						* SETTERS *
+						***********/
 
 	/*********************************************************
 	Modifie le nombre de ligne de la matrice
-	*********************************************************
-	Entrée: unsigned int uiNbLigne : le nouveau nombre de ligne de la matrice
-	Nécessite:	(rien)
-	Sortie: (rien)
-	Entraîne :	(uiMATNbLigne = uiNbLigne) et
-	(les éléments des (uiMATNbLigne - uiNbLigne) dernières lignes on été supprimé)
-	ou
-	(les éléments des (uiNbLigne - uiMATNbLigne) lignes on été rajouté en fin de la matrice)
 	*********************************************************/
 	void MATModifierNombreLigne(int iNbLigne);
 
 	/*********************************************************
 	Modifie le nombre de colonne de la matrice
-	*********************************************************
-	Entrée: unsigned int uiNbColonne : le nouveau nombre de colonne de la matrice
-	Nécessite: (rien)
-	Sortie: (rien)
-	Entraîne : (uiMATNbColonne = uiNbColonne) et
-	(les éléments des (uiMATNbColonne - uiNbColonne) dernières colonnes on été supprimé)
-	ou
-	(les éléments des (uiNbColonne - uiMATNbColonne) colones on été rajouté en fin de la matrice)
 	*********************************************************/
 	void MATModifierNombreColonne(int iNbColonne);
 
 	/*********************************************************
 	Modifie l'élément ligne uiIndiceLigne et colonne uiIndiceColonne
-	*********************************************************
-	Entrée: MType MTypeParam : le nouvelle élément à mettre dans la matrice
-	Nécessite: (uiIndiceColonne <= uiMATNbColonne) et (uiIndiceLigne <= uiMATNbLigne)				//voir si pré ou post condition (perso je pref post)
-	Sortie: (rien)
-	Entraîne : *(*(ppMATMatrice + uiIndiceColonne) + uiIndiceLigne) = MTypeParam
 	*********************************************************/
 	void MATModifierElement(int iIndiceLigne, int iIndiceColonne, MType MTypeParam);
 
-	/*METHODES*/
+					   /************
+						* METHODES *
+						************/
 
 	/*********************************************************
 	Calcul la transposé de la matrice
-	*********************************************************
-	Entrée: (rien)
-	Nécessite: la matrice doit contenir des éléments
-	Sortie: CMatrice<MType> : la tranposé de la matrice
-	Entraîne : (rien)
 	*********************************************************/
 	CMatrice<MType>& MATTranspose();
 
 	/*********************************************************
 	Affiche la matrice dans la console
-	*********************************************************
-	Entrée: (rien)
-	Nécessite: la matrice doit contenir des éléments
-	Sortie: (rien)
-	Entraîne : (la matrice est affiché dans la console)
-	*********************************************************/
+	**********************************************************/
 	void MATAfficherMatrice();
 
-	/*SURCHARGES*/
+					   /**************
+						* SURCHARGES *
+						**************/
 
 	/*********************************************************
 	Surcharge de l'operateur = pour la classe CMatrice<MType>
 	prenant un MType en paramètre
-	*********************************************************
-	Entrée: MType MTypeParam : la matrice à recopier
-	Nécessite: Les matrices doivent être du même type
-	Sortie: CMatrice<MType> : la matrice recopier à partir de MATMatrice en paramètre
-	Entraîne : this = MATMatrice
 	*********************************************************/
 	CMatrice<MType>& operator=(CMatrice<MType>& MATMatrice);
 
 	/*********************************************************
 	Surcharge de l'operateur + pour la classe CMatrice<MType>
 	prenant un CMatrice<MType> en paramètre
-	*********************************************************
-	Entrée: CMatrice<MType>& MATMatrice : la matrice à additionner 
-	Nécessite: Les deux matrices ont les mêmes dimensions 
-	Sortie: CMatrice<MType> MATMatrice : la somme des deux matrices
-	Entraîne : 
 	*********************************************************/
 	CMatrice<MType>& operator+(CMatrice<MType>& MATMatrice);
 
 	/*********************************************************
 	Surcharge de l'operateur - pour la classe CMatrice<MType>
 	prenant un CMatrice<MType> en paramètre
-	*********************************************************
-	Entrée: CMatrice<MType>& MATMatrice : la matrice à soustraire
-	Nécessite: Les deux matrices ont les mêmes dimensions
-	Sortie: CMatrice<MType> MATMatrice : la différence des deux matrices
-	Entraîne :
 	*********************************************************/
 	CMatrice<MType>& operator-(CMatrice<MType>& MATMatrice);
 
 	/*********************************************************
 	Surcharge de l'operateur * pour la classe CMatrice<MType>
-	prenant un CMatrice<MType> en paramètre
-	*********************************************************
-	Entrée: CMatrice<MType>& MATMatrice : la matrice à multiplier
-	Nécessite: Le nombre de colonne de la matrice appelante dois être égale au nombre de colonne de la matrice en paramètre
-	Sortie: CMatrice<MType> MATMatrice : le produit des deux matrices
-	Entraîne :
+	prenant un CMatrice<MType> en paramètre : produit matricielle
 	*********************************************************/
 	CMatrice<MType>& operator*(CMatrice<MType>& MATMatrice);
 
@@ -218,23 +145,12 @@ public:
 	/*********************************************************
 	Surcharge de l'operateur * pour la classe CMatrice<MType>
 	prenant un MType en paramètre
-	*********************************************************
-	Entrée: MType MTypeParam : la constante multiplicative
-	Nécessite: La matrice doit être du même type que MTypeParam
-	Sortie: CMatrice<MType> MATMatrice : le produit de la matrice pour MTypeParam
-	Entraîne :
 	*********************************************************/
 	CMatrice<MType>& operator*(const MType MTypeParam);
 
 	/*********************************************************
 	Surcharge de l'operateur / pour la classe CMatrice<MType>
 	prenant un MType en paramètre
-	*********************************************************
-	Entrée: MType MTypeParam : la constante dividende
-	Nécessite: La matrice doit être du même type que MTypeParam
-	Sortie: CMatrice<MType> MATMatrice : le quotient de la matrice pour MTypeParam
-	Entraîne : (tous les éléments de la matrice en sortie sont divisé par MTypeParam)
-	ou (Levee l'exception diviseur_nul
 	*********************************************************/
 	CMatrice<MType>& operator/(const MType MTypeParam);
 
@@ -643,8 +559,8 @@ void CMatrice<MType>::MATAfficherMatrice()
 {
 	// Affichage des dimensions de la matrice
 	///utile?
-	std::cout << "Nombre de colonne de la matrice : " << MATLireNombreColonne() << std::endl;
-	std::cout << "Nombre de ligne de la matrice : " << MATLireNombreLigne() << std::endl;
+	//std::cout << "Nombre de colonne de la matrice : " << MATLireNombreColonne() << std::endl;
+	//std::cout << "Nombre de ligne de la matrice : " << MATLireNombreLigne() << std::endl;
 
 	for (unsigned int uiBoucleIndiceLigne = 1; uiBoucleIndiceLigne <= uiMATNbLigne; uiBoucleIndiceLigne++)
 	{
@@ -758,7 +674,7 @@ CMatrice<MType>& CMatrice<MType>::operator-(CMatrice<MType>& MATMatrice)
 
 /*********************************************************
 Surcharge de l'operateur * pour la classe CMatrice<MType>
-prenant un CMatrice<MType> en paramètre
+prenant un CMatrice<MType> en paramètre : produit matricielle
 *********************************************************
 Entrée: CMatrice<MType>& MATMatrice : la matrice à multiplier
 Nécessite: (Les matrices sont du même type)
@@ -855,6 +771,4 @@ CMatrice<MType>& CMatrice<MType>::operator/(const MType MTypeParam)
 	}
 	return *pMATMatriceProduitCoeff;
 }
-
-
 #endif //MAT
