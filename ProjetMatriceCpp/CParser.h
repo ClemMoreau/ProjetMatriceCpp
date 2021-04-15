@@ -13,142 +13,64 @@ using namespace std;
 class CParser
 {
 private:
+
+					/*************
+					* ATTRIBUTS *
+					*************/
+
+	/*Nom du fichier*/
 	char* psPARNomFichier;
 
 public:
 
-	/*
-		Contructeur par défaut
-		Initilaise Le nom du fichier à NULL
-		Ne renvoie rien
-	*/
+
+					/*****************
+					 * CONSTRUCTEURS *
+					*****************/
+
+	/*********************************************************
+	Constructeur par défaut de la classe CParser
+	*********************************************************/
 	CParser();
 	
-	/*
-		Constructeur de Recopie 
-	*/
+	/*********************************************************
+	Constructeur de recopie de la classe CParser
+	prenant en paramètre un CParser
+	*********************************************************/
 	CParser(CParser &PARParser);
 
 
-	/*
-		Destructeur
-	*/
+	/*********************************************************
+	Destructeur de la classe CParser
+	*********************************************************/
 	~CParser();
 
-	/*
-		Lecture du nom du fichier, permet de tester si il est correcte
-		Paramètre en entréé : aucun
-		Paramètre en sortie : Nom du fichier
-		C'est un getter 
-	*/
+						/***********
+						 * GETTERS *
+						 ***********/
+
+	/*********************************************************
+	Renvoie le nom du fichier
+	*********************************************************/
 	char* PARLireNomFichier();
 
-	/*
-		modification du nom du fichier
-		Paramètre en entrée : sNomFichier --> Le nom du fichier
-		Paramètre en sortie : Le nom du fichier modifié
-	*/
+						/***********
+						* SETTERS *
+						***********/
+
+	/*********************************************************
+	Modifie le nom du fichier
+	*********************************************************/
 	void PARModifierNomFichier(const char* sNomFichier);
 
-	/*
-		Lecture du fichier
-		Vérification du typage
-		Vérification Taille
-		Stockage des infos essentiel dans un objet CMatrice
-	*/
+						/************
+						* METHODES *
+						************/
+
+	/*********************************************************
+	Lecture du fichier et extraction des informations dans le fichier
+	*********************************************************/
 	CMatrice<double>& PARLireFichier();
 };
-
-//CMatrice<double> CParser::PARLireFichier()
-//{
-
-	//cout << "laisse moi dormir zeubi" << endl;
-	/*if (psPARNomFichier == NULL)
-	{
-		std::cout << "Erreur fichier inexistant !" << std::endl;
-	}
-	FILE* pfFichier = NULL;
-	// On ouvre notre fichier en mode lecture
-	pfFichier = fopen(psPARNomFichier, "r");
-
-	//Déclaration des variables
-	char *cType;
-	char *cNbLignes;
-	char *cNbColonnes;
-	char *cIgnore;
-	unsigned int uiNbColonnes;
-	unsigned int uiNbLignes;
-	char* pcType;
-	char cdelim = '=';
-	double* dValeur;
-
-	*/
-	/*
-		Sortie : Donné récupéré depuis le fichier si fichier respecte la nomenclature
-		But : On récupère le type et le nb de lignes et de colonnes avec fscanf
-			On utilise strtok pour récupérer ce qu'il y a aprés les espaces.
-	*/
-
-	/*if (pfFichier == NULL)
-	{
-		std::cout << "Erreur d'ouverture du fichier en lecture" << std::endl;
-	}
-	else
-	{
-		//fscanf(notrefichier, "format donné à récupérer", lieu stockage donnée)
-		fscanf(pfFichier, "%s", cType);
-		std::cout << "type :" << cType;
-
-		fscanf(pfFichier, "%s", cNbLignes );
-		std::cout << "nblignes :" << cNbLignes;
-
-		fscanf(pfFichier, "%s", cNbColonnes);
-		std::cout << "nbcol :" << cNbColonnes;
-
-		//strtok(la chaine de caractère que l'on va traiter, l'opérateur délimitant)
-		/*strtok(cType,cdelim);
-		pcType = strtok(cType, cdelim);
-
-		if (pcType != "double")
-		{
-			std::cout << "Erreur Mauvais type" << std::endl;
-			//On appelle CExeption
-		}
-		strtok(cType, cdelim);
-		pcType = strtok(cType, cdelim);
-
-		strtok(cNbLignes, delim);
-		uiNbLignes = strtok(cNbLignes, cdelim);
-
-		strtok(cNbColonnes, cdelim);
-		uiNbColonnes = strtok(cNbColonnes, cdelim);
-
-		CMatrice<MType>(uiNbLignes, uiNbColonnes);
-
-		//on ignore la ligne
-		fscanf(pfFichier, '%s', cIgnore);
-
-		//boucle permettant la récupération et le stockage des valeurs de la matrice
-		// strcpy(destination de la copie, source de la copie)
-		for (unsigned int uiIndiceBoucleScan; uiIndiceBoucleScan <= uiNbLignes;++uiIndiceBoucleScan)
-		{
-			fscanf(pfFichier, '%s', dValeur);
-		}
-		for (unsigned int uiIndiceBoucleCopy; uiIndiceBoucleCopy < uiNbLignes; uiIndiceBoucleCopy += uiIndiceBoucleCopy)
-		{
-			// à revoir comment définir une matrice comme destinataire
-			strcpy(CMatrice, dValeur);
-		}
-
-		//fermeture du fichier
-		fclose(pfFichier);
-	}
-
-	//on veut récupérer les lignes du fichier et les stocker dans une matrice CMatrice
-
-	//fscanf(fichier, %s, )
-	CMatrice<double> MATMatrice;
-	return MATMatrice;*/
-//}
 
 #endif //PAR
