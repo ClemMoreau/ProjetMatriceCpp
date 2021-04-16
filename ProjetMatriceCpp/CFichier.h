@@ -2,11 +2,17 @@
 #define FIC 0
 
 #include <stdio.h>
-#include "CMatrice.h"
-#include "CException.h"
 #include<iostream>
 #include<cstring>
 #include<fstream>
+#include <string>
+#include "CMatrice.h"
+#include "CException.h"
+
+#define nom_null 301
+#define mauvais_type 302
+#define ouverture_fichier_impossible 303
+
 
 using namespace std;
 

@@ -719,7 +719,7 @@ prenant un MType en paramètre
 *********************************************************
 Entrée: MType MTypeParam : la constante multiplicative
 Nécessite: (La matrice doit être du même type que MTypeParam)
-Sortie: CMatrice<MType> : le produit de la matrice pour MTypeParam
+Sortie: CMatrice<MType> : le produit de la matrice par MTypeParam
 Entraîne :(tous les éléments de la matrice en sortie sont multipliés par MTypeParam)
 *********************************************************/
 template <class MType>
@@ -738,13 +738,14 @@ CMatrice<MType>& CMatrice<MType>::operator*(const MType MTypeParam)
 	return *pMATMatriceProduitCoeff;
 }
 
+
 /*********************************************************
 Surcharge de l'operateur / pour la classe CMatrice<MType>
 prenant un MType en paramètre
 *********************************************************
 Entrée: MType MTypeParam : la constante dividende
 Nécessite: (La matrice doit être du même type que MTypeParam)
-Sortie: CMatrice<MType> : le quotient de la matrice pour MTypeParam
+Sortie: CMatrice<MType> : le quotient de la matrice par MTypeParam
 Entraîne : (tous les éléments de la matrice en sortie sont divisés par MTypeParam)
 ou (Exception diviseur_nul est levé)
 *********************************************************/
@@ -771,4 +772,31 @@ CMatrice<MType>& CMatrice<MType>::operator/(const MType MTypeParam)
 	}
 	return *pMATMatriceProduitCoeff;
 }
+
+/*********************************************************
+Surcharge de l'operateur * prenant un MType en paramètre 
+et une CMatrice<MType>
+*********************************************************
+Entrée: MType MTypeParam : la constante multiplicative
+CMatrice<MType> : la matrice à multiplier
+Nécessite: (La matrice doit être du même type que MTypeParam)
+Sortie: CMatrice<MType> : le produit de la matrice par MTypeParam
+Entraîne : (tous les éléments de la matrice en sortie sont multipliés par MTypeParam)
+*********************************************************/
+template <class MType>
+CMatrice<MType>& operator*(const MType MTypeParam, CMatrice<MType>& MATMatrice)
+{
+	// Allocation du résulat du produit : initialisé par recopie
+	CMatrice<MType>* pMATMatriceProduitCoeff = new CMatrice<MType>(MATMatrice);
+	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= MATMatrice.MATLireNombreColonne(); uiBoucleColonne++)
+	{
+		for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= MATMatrice.MATLireNombreLigne(); uiBoucleLigne++)
+		{
+			// Calcul du produit : pour chaque élément de la matrice
+			pMATMatriceProduitCoeff->MATModifierElement(uiBoucleLigne, uiBoucleColonne, MTypeParam * MATMatrice.MATLireElement(uiBoucleLigne, uiBoucleColonne));
+		}
+	}
+	return *pMATMatriceProduitCoeff;
+}
+
 #endif //MAT

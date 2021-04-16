@@ -6,6 +6,9 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 	/* Fonction principale */
+	char a[] = "C:/Users/cleme/Downloads/TestExe/test2.txt";
+	argv[1] = a;
+	argc = 2;
 
 	CFichier FICFichier;
 	double dFin;
@@ -31,9 +34,9 @@ int main(int argc, char *argv[])
 			pMATTableauMatrice[iBoucleInit - 1].MATAfficherMatrice();
 		}
 	}
-	catch (CException EXCLevee)
+	catch (CException EXCObjet)
 	{
-		cerr << "Les matrices ne sont pas du type double" << endl;
+		cerr << "L'exception " << EXCObjet.EXClire_valeur() << endl;
 		cout << "Veuillez entrer quelque chose puis appuyer sur entree pour quitter..." << endl;
 		cin >> dFin;
 		return 1;
