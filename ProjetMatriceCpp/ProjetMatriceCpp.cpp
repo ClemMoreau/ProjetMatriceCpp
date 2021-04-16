@@ -1,5 +1,5 @@
 #include <iostream>
-#include "CParser.h"
+#include "CFichier.h"
 
 using namespace std;
 
@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
 	/* Fonction principale */
 
-	CParser PARParser;
+	CFichier FICFichier;
 	double dFin;
 	if (argc < 2)
 	{
@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
 		// Pour fichier, on créer la matrice correspondantes et l'affiche à l'écran
 		for (int iBoucleInit = 1; iBoucleInit < argc; iBoucleInit++)
 		{	
-			PARParser.PARModifierNomFichier(argv[iBoucleInit]);
-			pMATTableauMatrice[iBoucleInit - 1] = PARParser.PARLireFichier();
-			cout << "Matrice du fichier " << PARParser.PARLireNomFichier() << " :" << endl;
+			FICFichier.FICModifierNomFichier(argv[iBoucleInit]);
+			pMATTableauMatrice[iBoucleInit - 1] = FICFichier.FICLireFichier();
+			cout << "Matrice du fichier " << FICFichier.FICLireNomFichier() << " :" << endl;
 			pMATTableauMatrice[iBoucleInit - 1].MATAfficherMatrice();
 		}
 	}

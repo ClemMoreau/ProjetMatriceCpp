@@ -1,15 +1,20 @@
 #ifndef EXC
 #define EXC 0
-
 #define valeur_negative 100
 
 class CException
 {
 private:
+					/*************
+					* ATTRIBUTS *
+					*************/
+	
 	unsigned int uiEXCvaleur;
 
 public:
-	/*CONSTRUCTEURS*/
+					/*****************
+					 * CONSTRUCTEURS *
+					*****************/
 	
 	/*********************************************************
 	Constructeur par défaut de la classe CException
@@ -32,7 +37,9 @@ public:
 	*********************************************************/
 	CException(CException &EXCobjet);
 
-	/*DESTRUCTEUR*/
+					/***************
+					* DESTRUCTEUR *
+					***************/
 
 	/*********************************************************
 	Destructeur de la classe CException
@@ -44,10 +51,12 @@ public:
 	*********************************************************/
 	~CException();
 
-	/*SETTER*/
+					/***********
+					* SETTERS *
+					***********/
 
 	/*********************************************************
-	Destructeur de la classe CException
+	Attributs le code d'exception correspondant
 	*********************************************************
 	Entrée: unsigned int uiValeur : le code de l'exception à levé
 	Nécessite:	uiValeur > 0
@@ -56,10 +65,12 @@ public:
 	*********************************************************/
 	void EXCmodifier_valeur(int iValeur);
 
-	/*GETTER*/
+					/***********
+					 * GETTERS *
+					 ***********/
 
 	/*********************************************************
-	Destructeur de la classe CException
+	Lit le code de l'exception levé
 	*********************************************************
 	Entrée: (rien)
 	Nécessite:	(rien)
