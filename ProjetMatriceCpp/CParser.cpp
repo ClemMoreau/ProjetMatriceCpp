@@ -1,10 +1,5 @@
 #include "CParser.h"
-#include <string>
-#include "CException.h"
 
-#define nom_null 201
-#define mauvais_type 202
-#define ouverture_fichier_impossible 203
 
 /*********************************************************
 Constructeur par défaut de la classe CParser
