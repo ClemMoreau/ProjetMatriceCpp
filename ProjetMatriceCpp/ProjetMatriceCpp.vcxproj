@@ -149,13 +149,13 @@
   <ItemGroup>
     <ClCompile Include="CException.cpp" />
     <ClCompile Include="CMatrice.cpp" />
-    <ClCompile Include="CParser.cpp" />
+    <ClCompile Include="CFichier.cpp" />
     <ClCompile Include="ProjetMatriceCpp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CException.h" />
     <ClInclude Include="CMatrice.h" />
-    <ClInclude Include="CParser.h" />
+    <ClInclude Include="CFichier.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\..\..\..\OneDrive\Bureau\monq.txt" />

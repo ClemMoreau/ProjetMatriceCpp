@@ -1,44 +1,49 @@
-#include "CParser.h"
+#include "CFichier.h"
+#include <string>
+#include "CException.h"
 
+#define nom_null 201
+#define mauvais_type 202
+#define ouverture_fichier_impossible 203
 
 /*********************************************************
-Constructeur par défaut de la classe CParser
+Constructeur par défaut de la classe CFichier
 *********************************************************
 Entrée: (rien)
 Nécessite:	(rien)
 Sortie: (rien)
 Entraîne :	L'objet est initialisé avec psNomdeFichier = NULL
 *********************************************************/
-CParser::CParser()
+CFichier::CFichier()
 {
-	PARModifierNomFichier(NULL);
+	FICModifierNomFichier(NULL);
 }
 
 /*********************************************************
-Constructeur de recopie de la classe CParser
-prenant en paramètre un CParser
+Constructeur de recopie de la classe CFichier
+prenant en paramètre un CFichier
 *********************************************************
-Entrée: CParser &PARParser : L 'objet parser à recopier
-Nécessite:	CParser &PARParser doit être initialisé
+Entrée: CFichier &FICFichier : L 'objet fichier à recopier
+Nécessite:	CFichier &FICFichier doit être initialisé
 Sortie: (rien)
 Entraîne :	Modification du nom du fichier
 *********************************************************/
-CParser::CParser(CParser &PARParser)
+CFichier::CFichier(CFichier &FICFichier)
 {
-	PARModifierNomFichier(PARParser.PARLireNomFichier());
+	FICModifierNomFichier(FICFichier.FICLireNomFichier());
 }
 
 /*********************************************************
-Destructeur de la classe CParser
+Destructeur de la classe CFichier
 *********************************************************
 Entrée: (rien)
 Nécessite:	(rien)
 Sortie: (rien)
 Entraîne :	L'objet est prêt à être détruit
 *********************************************************/
-CParser::~CParser()
+CFichier::~CFichier()
 {
-	free(psPARNomFichier);
+	free(psFICNomFichier);
 }
 
 /*********************************************************
@@ -46,19 +51,19 @@ Renvoie le nom du fichier
 *********************************************************
 Entrée: (rien)
 Nécessite:	(rien)
-Sortie: psPARNomFichier : le nom du fichier
+Sortie: psFICNomFichier : le nom du fichier
 Entraîne :	(rien)
 *********************************************************/
-char* CParser::PARLireNomFichier()
+char* CFichier::FICLireNomFichier()
 {
-	if (psPARNomFichier == NULL)
+	if (psFICNomFichier == NULL)
 	{
 		CException EXCObjet;
 		EXCObjet.EXCmodifier_valeur(nom_null);
 		throw(EXCObjet);
 
 	}
-	return psPARNomFichier;
+	return psFICNomFichier;
 }
 
 /*********************************************************
@@ -67,30 +72,30 @@ Modifie le nom du fichier si déja existant
 Entrée: const char* sNomFichier : le nouveau nom de notre fichier
 Nécessite:	(rien)
 Sortie: (rien)
-Entraîne : Entraine "libération" de psPARNomFichier
-et psPARNomFichier = sNomFichier
+Entraîne : Entraine "libération" de psFICNomFichier
+et psFICNomFichier = sNomFichier
 *********************************************************/
-void CParser::PARModifierNomFichier(const char* sNomFichier)
+void CFichier::FICModifierNomFichier(const char* sNomFichier)
 {
 	if (sNomFichier)
 	{
-		if (psPARNomFichier)
+		if (psFICNomFichier)
 		{
-			free(psPARNomFichier);
+			free(psFICNomFichier);
 		}
 
 		int iConteur = strlen(sNomFichier);
-		psPARNomFichier = (char*)malloc(iConteur + 1);
+		psFICNomFichier = (char*)malloc(iConteur + 1);
 		int iBoucleCopie;
 		for (iBoucleCopie = 0; iBoucleCopie < iConteur; iBoucleCopie++)
 		{
-			psPARNomFichier[iBoucleCopie] = sNomFichier[iBoucleCopie];
+			psFICNomFichier[iBoucleCopie] = sNomFichier[iBoucleCopie];
 		}
-		psPARNomFichier[iBoucleCopie] = '\0';
+		psFICNomFichier[iBoucleCopie] = '\0';
 	}
 	else 
 	{
-		psPARNomFichier = NULL;
+		psFICNomFichier = NULL;
 	}
 }
 
@@ -103,10 +108,10 @@ Sortie: CMatrice<double> : la matrice de double extraite du fichier
 Entraîne : Récupération des informations du fichier, création d'une matrice
 de type double rempli avec le contenu du fichier
 *********************************************************/
-CMatrice<double>& CParser::PARLireFichier()
+CMatrice<double>& CFichier::FICLireFichier()
 {
 	// Ouverture du fichier
-	ifstream fFichier(PARLireNomFichier());
+	ifstream fFichier(FICLireNomFichier());
 	if (!fFichier)
 	{
 		//On teste si l'ouverture c'est bien déroulé

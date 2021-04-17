@@ -1,5 +1,5 @@
-#ifndef PAR
-#define PAR 0
+#ifndef FIC
+#define FIC 0
 
 #include <stdio.h>
 #include<iostream>
@@ -16,67 +16,69 @@
 
 using namespace std;
 
-class CParser
+class CFichier
 {
 private:
-
 					/*************
 					* ATTRIBUTS *
 					*************/
 
 	/*Nom du fichier*/
-	char* psPARNomFichier;
+	char* psFICNomFichier;
 
 public:
-
 
 					/*****************
 					 * CONSTRUCTEURS *
 					*****************/
 
 	/*********************************************************
-	Constructeur par défaut de la classe CParser
+	Constructeur par défaut de la classe CFichier
 	*********************************************************/
-	CParser();
+	CFichier();
 	
 	/*********************************************************
-	Constructeur de recopie de la classe CParser
-	prenant en paramètre un CParser
+	Constructeur de recopie de la classe CFichier
+	prenant en paramètre un CFichier
 	*********************************************************/
-	CParser(CParser &PARParser);
+	CFichier(CFichier &FICFichier);
 
+
+					/***************
+					* DESTRUCTEUR *
+					***************/
 
 	/*********************************************************
-	Destructeur de la classe CParser
+	Destructeur de la classe CFichier
 	*********************************************************/
-	~CParser();
+	~CFichier();
 
-						/***********
-						 * GETTERS *
-						 ***********/
+					/***********
+					 * GETTERS *
+					 ***********/
 
 	/*********************************************************
 	Renvoie le nom du fichier
 	*********************************************************/
-	char* PARLireNomFichier();
+	char* FICLireNomFichier();
 
-						/***********
-						* SETTERS *
-						***********/
+					/***********
+					* SETTERS *
+					***********/
 
 	/*********************************************************
 	Modifie le nom du fichier
 	*********************************************************/
-	void PARModifierNomFichier(const char* sNomFichier);
+	void FICModifierNomFichier(const char* sNomFichier);
 
-						/************
-						* METHODES *
-						************/
+					/************
+					* METHODES *
+					************/
 
 	/*********************************************************
 	Lecture du fichier et extraction des informations dans le fichier
 	*********************************************************/
-	CMatrice<double>& PARLireFichier();
+	CMatrice<double>& FICLireFichier();
 };
 
-#endif //PAR
+#endif //FIC
