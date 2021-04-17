@@ -6,10 +6,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
 	/* Fonction principale */
-	char a[] = "C:/Users/cleme/Downloads/TestExe/test2.txt";
-	argv[1] = a;
-	argc = 2;
-
+	
 	CFichier FICFichier;
 	double dFin;
 	if (argc < 2)
@@ -20,27 +17,27 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	// Lecture fichiers
+	// Lecture fichier : les matrices seront contenus dans un tableau
 	CMatrice<double>* pMATTableauMatrice = new CMatrice<double>[argc - 1];
 
-	try
-	{
-		// Pour fichier, on créer la matrice correspondantes et l'affiche à l'écran
-		for (int iBoucleInit = 1; iBoucleInit < argc; iBoucleInit++)
-		{	
-			FICFichier.FICModifierNomFichier(argv[iBoucleInit]);
-			pMATTableauMatrice[iBoucleInit - 1] = FICFichier.FICLireFichier();
+	// Pour fichier, on créer la matrice correspondantes et l'affiche à l'écran
+	int iNbErreurs = 0;
+	for (int iBoucleInit = 1; iBoucleInit < argc; iBoucleInit++)
+	{	
+		FICFichier.FICModifierNomFichier(argv[iBoucleInit]);
+		try
+		{
+			pMATTableauMatrice[iBoucleInit - 1 - iNbErreurs] = FICFichier.FICLireFichier();
 			cout << "Matrice du fichier " << FICFichier.FICLireNomFichier() << " :" << endl;
-			pMATTableauMatrice[iBoucleInit - 1].MATAfficherMatrice();
+			pMATTableauMatrice[iBoucleInit - 1 - iNbErreurs].MATAfficherMatrice();
+		}
+		catch (CException EXCLevee)
+		{
+			cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee pour le fichier " << FICFichier.FICLireNomFichier() << endl << endl;
+			iNbErreurs++;
 		}
 	}
-	catch (CException EXCObjet)
-	{
-		cerr << "L'exception " << EXCObjet.EXClire_valeur() << endl;
-		cout << "Veuillez entrer quelque chose puis appuyer sur entree pour quitter..." << endl;
-		cin >> dFin;
-		return 1;
-	}
+	argc -= iNbErreurs;
 
 	// On demande à l'utilisateur de rentré une valeur pour la suite du programme
 	double dConstante;
@@ -67,7 +64,7 @@ int main(int argc, char *argv[])
 	for (int iBoucleMultiplication = 0; iBoucleMultiplication < argc - 1; iBoucleMultiplication++)
 	{
 		MATResultats = pMATTableauMatrice[iBoucleMultiplication] * dConstante;
-		cout << "Matrice " << iBoucleMultiplication << " :" << endl;
+		cout << "Matrice " << iBoucleMultiplication + 1<< " :" << endl;
 		MATResultats.MATAfficherMatrice();
 	}
 
@@ -78,7 +75,7 @@ int main(int argc, char *argv[])
 		for (int iBoucleDivision = 0; iBoucleDivision < argc - 1; iBoucleDivision++)
 		{
 			MATResultats = pMATTableauMatrice[iBoucleDivision] / dConstante;
-			cout << "Matrice " << iBoucleDivision << " :" << endl;
+			cout << "Matrice " << iBoucleDivision + 1 << " :" << endl;
 			MATResultats.MATAfficherMatrice();
 		}
 	}
@@ -100,62 +97,75 @@ int main(int argc, char *argv[])
 		CMatrice<double> MATCalculs = pMATTableauMatrice[0];
 
 		// Affichage du résultat de la somme de toutes les matrices
-		try
+		cout << "SOMME DES MATRICES : M1+M2+..." << endl;
+		for (int iBoucleAddition = 1; iBoucleAddition < argc - 1; iBoucleAddition++)
 		{
-			cout << "SOMME DES MATRICES : M1+M2+..." << endl;
-			for (int iBoucleAddition = 1; iBoucleAddition < argc - 1; iBoucleAddition++)
+			try
 			{
 				MATCalculs = MATCalculs + pMATTableauMatrice[iBoucleAddition];
 			}
-			MATCalculs.MATAfficherMatrice();
+			catch (CException EXCLevee)
+			{
+				cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee." << endl;
+				cout << "La matrice " << iBoucleAddition << " est ignoré pour le calcul de la somme." << endl;
+			}
 		}
-		catch (CException EXCLevee)
-		{
-			cout << "Somme impossible : les dimensions des matrices sont differentes !" << endl << endl;
-		}
+		MATCalculs.MATAfficherMatrice();
 		
 		// Affichage du résultat de la somme alternée de toutes les matrices (-1)^n
-		try
+		MATCalculs = pMATTableauMatrice[0];
+		cout << "SOMME ALTERNEE DES MATRICES : M1-M2+..." << endl;
+		MATCalculs = pMATTableauMatrice[0];
+		int iBool = 1;
+		for (int iBoucleSommeAlt = 1; iBoucleSommeAlt < argc - 1; iBoucleSommeAlt++, iBool++)
 		{
-			CMatrice<double> MATCalculs = pMATTableauMatrice[0];
-			cout << "SOMME ALTERNEE DES MATRICES : M1-M2+..." << endl;
-			MATCalculs = pMATTableauMatrice[0];
-			int iBool = 1;
-			for (int iBoucleSommeAlt = 1; iBoucleSommeAlt < argc - 1; iBoucleSommeAlt++, iBool++)
+			// si iBoucleSommeAlt est pair
+			if (iBool % 2 == 0)
 			{
-				// si iBoucleSommeAlt est pair
-				if (iBool % 2 == 0)
+				try
 				{
 					MATCalculs = MATCalculs + pMATTableauMatrice[iBoucleSommeAlt];
 				}
-				// sinon iBoucleSommeAlt est impair
-				else
+				catch (CException EXCLevee)
+				{
+
+					cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee." << endl;
+					cout << "La matrice " << iBoucleSommeAlt + 1 << " est ignoré pour le calcul de la somme alternee." << endl;
+				}
+			}
+			// sinon iBoucleSommeAlt est impair
+			else
+			{
+				try
 				{
 					MATCalculs = MATCalculs - pMATTableauMatrice[iBoucleSommeAlt];
 				}
-			}
-			MATCalculs.MATAfficherMatrice();
-		}
-		catch (CException EXCLevee)
-		{
-			cerr << "Somme alternee impossible : les dimensions des matrices sont differentes !" << endl << endl;
-		}
+				catch (CException EXCLevee)
+				{
 
-		// Affichage du résultat des produits matricielles
-		try
-		{
-			cout << "PRODUIT DES MATRICES : M1*M2*..." << endl;
-			MATCalculs = pMATTableauMatrice[0];
-			for (int iBoucleAddition = 1; iBoucleAddition < argc - 1; iBoucleAddition++)
-			{
-				MATCalculs = MATCalculs * pMATTableauMatrice[iBoucleAddition];
+					cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee." << endl;
+					cout << "La matrice " << iBoucleSommeAlt + 1 << " est ignoré pour le calcul de la somme alternee." << endl;
+				}
 			}
-			MATCalculs.MATAfficherMatrice();
 		}
-		catch (CException EXCLevee)
+		MATCalculs.MATAfficherMatrice();
+		
+		// Affichage du résultat des produits matricielles
+		cout << "PRODUIT DES MATRICES : M1*M2*..." << endl;
+		MATCalculs = pMATTableauMatrice[0];
+		for (int iBoucleProduit = 1; iBoucleProduit < argc - 1; iBoucleProduit++)
 		{
-			cout << "Produit matricielle impossible : les dimensions des matrices ne correspondent pas !" << endl << endl;
+			try
+			{
+				MATCalculs = MATCalculs * pMATTableauMatrice[iBoucleProduit];
+			}
+			catch (CException EXCLevee)
+			{
+				cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee." << endl;
+				cout << "La matrice " << iBoucleProduit + 1 << " est ignoré pour le calcul du produit matricielle." << endl;
+			}
 		}
+		MATCalculs.MATAfficherMatrice();
 
 		// Fin du programme
 		cout << "Toutes les operations sont terminees !" << endl;

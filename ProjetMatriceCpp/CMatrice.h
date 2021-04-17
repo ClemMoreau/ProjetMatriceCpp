@@ -695,7 +695,10 @@ CMatrice<MType>& CMatrice<MType>::operator*(CMatrice<MType>& MATMatrice)
 
 	// Allocation du résulat du produit : initialisé par recopie
 	CMatrice<MType>* pMATMatriceProduit = new CMatrice<MType>(*this);
-	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= uiMATNbColonne; uiBoucleColonne++)
+	pMATMatriceProduit->MATModifierNombreColonne(MATMatrice.MATLireNombreColonne());
+	pMATMatriceProduit->MATModifierNombreLigne(MATLireNombreLigne());
+
+	for (unsigned int uiBoucleColonne = 1; uiBoucleColonne <= MATMatrice.uiMATNbColonne; uiBoucleColonne++)
 	{
 		for (unsigned int uiBoucleLigne = 1; uiBoucleLigne <= uiMATNbLigne; uiBoucleLigne++)
 		{

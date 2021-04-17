@@ -1,11 +1,11 @@
 #ifndef FIC
 #define FIC 0
 
-#include <stdio.h>
-#include<iostream>
-#include<cstring>
-#include<fstream>
+#include <iostream>
+#include <cstring>
+#include <fstream>
 #include <string>
+#include <stdio.h>
 #include "CMatrice.h"
 #include "CException.h"
 

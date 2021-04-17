@@ -1,10 +1,4 @@
 #include "CFichier.h"
-#include <string>
-#include "CException.h"
-
-#define nom_null 201
-#define mauvais_type 202
-#define ouverture_fichier_impossible 203
 
 /*********************************************************
 Constructeur par défaut de la classe CFichier
@@ -175,7 +169,6 @@ CMatrice<double>& CFichier::FICLireFichier()
 	for (int iBoucleTest = 0; iBoucleTest < int(strlen(pcType)); iBoucleTest++)
 		if (pcType[iBoucleTest] != cTypeTest[iBoucleTest])
 		{
-			cerr << "Vous avez rentre un type invalide" << endl;
 			CException EXCType;
 			EXCType.EXCmodifier_valeur(mauvais_type);
 			throw(EXCType);
