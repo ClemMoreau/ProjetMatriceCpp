@@ -64,7 +64,7 @@ char* CFichier::FICLireNomFichier()
 Modifie le nom du fichier si déja existant 
 *********************************************************
 Entrée: const char* sNomFichier : le nouveau nom de notre fichier
-Nécessite:	(rien)
+Nécessite:	(sNomFichier ne doit pas contenir d'espace)
 Sortie: (rien)
 Entraîne : Entraine "libération" de psFICNomFichier
 et psFICNomFichier = sNomFichier
@@ -170,7 +170,7 @@ CMatrice<double>& CFichier::FICLireFichier()
 		if (pcType[iBoucleTest] != cTypeTest[iBoucleTest])
 		{
 			CException EXCType;
-			EXCType.EXCmodifier_valeur(mauvais_type);
+			EXCType.EXCmodifier_valeur(type_incorrect);
 			throw(EXCType);
 		}
 	

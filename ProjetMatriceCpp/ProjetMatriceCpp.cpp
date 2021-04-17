@@ -81,12 +81,13 @@ int main(int argc, char *argv[])
 	}
 	catch (CException EXCLevee)
 	{
-		cerr << "Divsion par 0 impossible !" << endl << endl;
+		cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee." << endl;
+		cout << "Divsion par 0 impossible !" << endl << endl;
 	}
 	
 	if (argc == 2)
 	{
-		cout << "Vous n'avez passé qu'un seul fichier au programme, la suite du programme n'est donc pas disponible !" << endl;
+		cout << "Vous n'avez passe qu'un seul fichier au programme, la suite du programme n'est donc pas disponible !" << endl;
 		cout << "Veuillez entrer quelque chose puis appuyer sur entree pour quitter..." << endl;
 		cin >> dFin;
 		return 0;
@@ -107,7 +108,7 @@ int main(int argc, char *argv[])
 			catch (CException EXCLevee)
 			{
 				cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee." << endl;
-				cout << "La matrice " << iBoucleAddition << " est ignoré pour le calcul de la somme." << endl;
+				cout << "La matrice " << iBoucleAddition << " est ignore pour le calcul de la somme." << endl;
 			}
 		}
 		MATCalculs.MATAfficherMatrice();
@@ -130,7 +131,7 @@ int main(int argc, char *argv[])
 				{
 
 					cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee." << endl;
-					cout << "La matrice " << iBoucleSommeAlt + 1 << " est ignoré pour le calcul de la somme alternee." << endl;
+					cout << "La matrice " << iBoucleSommeAlt + 1 << " est ignore pour le calcul de la somme alternee." << endl;
 				}
 			}
 			// sinon iBoucleSommeAlt est impair
@@ -144,7 +145,7 @@ int main(int argc, char *argv[])
 				{
 
 					cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee." << endl;
-					cout << "La matrice " << iBoucleSommeAlt + 1 << " est ignoré pour le calcul de la somme alternee." << endl;
+					cout << "La matrice " << iBoucleSommeAlt + 1 << " est ignore pour le calcul de la somme alternee." << endl;
 				}
 			}
 		}
@@ -162,7 +163,7 @@ int main(int argc, char *argv[])
 			catch (CException EXCLevee)
 			{
 				cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee." << endl;
-				cout << "La matrice " << iBoucleProduit + 1 << " est ignoré pour le calcul du produit matricielle." << endl;
+				cout << "La matrice " << iBoucleProduit + 1 << " est ignore pour le calcul du produit matricielle." << endl;
 			}
 		}
 		MATCalculs.MATAfficherMatrice();
