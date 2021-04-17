@@ -1,12 +1,12 @@
 #ifndef MAT
 #define MAT 0
 
-#include <stdio.h>
 #include "CException.h"
+#include <stdio.h>
 
 #define dimension_incorrecte 201
-#define dim_matrice_diff 203
-#define diviseur_nul 204
+#define dim_matrice_diff 202
+#define diviseur_nul 203
 
 template <class MType> class CMatrice
 {
@@ -22,11 +22,8 @@ private:
 	/*Nombre de colonnes de la matrice*/
 	unsigned int uiMATNbColonne;
 
-	/*
-	* Contenu de la matrice : [1;uiMATNbLigne]x[1;uiMATNbColonne]
-	* Il faut utiliser les indices mathématiques d'une matrice 
-	* et non les indices d'un tableau en C 
-	*/
+	/*Contenu de la matrice : [1;uiMATNbLigne]x[1;uiMATNbColonne]*/
+	///Il faut utiliser les indices mathématiques d'une matrice et non les indices d'un tableau en C 
 	MType **ppMATMatrice;
 
 public:
@@ -76,7 +73,7 @@ public:
 	unsigned int MATLireNombreColonne();
 
 	/*********************************************************
-	Renvoie l'élément ligne uiIndiceLigne et colonne uiIndiceColonne
+	Renvoie l'élément ligne iIndiceLigne et colonne iIndiceColonne
 	*********************************************************/
 	MType MATLireElement(int iIndiceLigne, int iIndiceColonne);
 
@@ -95,7 +92,7 @@ public:
 	void MATModifierNombreColonne(int iNbColonne);
 
 	/*********************************************************
-	Modifie l'élément ligne uiIndiceLigne et colonne uiIndiceColonne
+	Modifie l'élément ligne iIndiceLigne et colonne iIndiceColonne
 	*********************************************************/
 	void MATModifierElement(int iIndiceLigne, int iIndiceColonne, MType MTypeParam);
 
@@ -125,13 +122,13 @@ public:
 
 	/*********************************************************
 	Surcharge de l'operateur + pour la classe CMatrice<MType>
-	prenant un CMatrice<MType> en paramètre
+	prenant un CMatrice<MType> en paramètre : addtition matricielle
 	*********************************************************/
 	CMatrice<MType>& operator+(CMatrice<MType>& MATMatrice);
 
 	/*********************************************************
 	Surcharge de l'operateur - pour la classe CMatrice<MType>
-	prenant un CMatrice<MType> en paramètre
+	prenant un CMatrice<MType> en paramètre : soustraction matricielle
 	*********************************************************/
 	CMatrice<MType>& operator-(CMatrice<MType>& MATMatrice);
 
@@ -144,13 +141,13 @@ public:
 
 	/*********************************************************
 	Surcharge de l'operateur * pour la classe CMatrice<MType>
-	prenant un MType en paramètre
+	prenant un MType en paramètre : multiplication par constante
 	*********************************************************/
 	CMatrice<MType>& operator*(const MType MTypeParam);
 
 	/*********************************************************
 	Surcharge de l'operateur / pour la classe CMatrice<MType>
-	prenant un MType en paramètre
+	prenant un MType en paramètre : division par constante
 	*********************************************************/
 	CMatrice<MType>& operator/(const MType MTypeParam);
 
@@ -163,7 +160,7 @@ Entrée: (rien)
 Nécessite:	(rien)
 Sortie: (rien)
 Entraîne :	L'objet est initialisé avec uiMATNbLigne = 0
-uiMATNbColonne = 0 et **ppMATMatrice = NULL
+uiMATNbColonne = 0 et ppMATMatrice = NULL
 *********************************************************/
 template <class MType>
 CMatrice<MType>::CMatrice()
@@ -180,8 +177,8 @@ prenant en paramètre un CMatrice<MType>
 Entrée: CMatrice<MType>& MATMatrice : la matrice à recopier
 Nécessite:	CMatrice<MType>& MATMatrice doit être initialisé
 Sortie: (rien)
-Entraîne :	L'objet est initialisé à partir des attributs
-	de MATMatrice en paramètre
+Entraîne : L'objet est initialisé à partir des attributs
+de MATMatrice en paramètre
 *********************************************************/
 template <class MType>
 CMatrice<MType>::CMatrice(CMatrice<MType>& MATMatrice)
@@ -314,10 +311,10 @@ Modifie le nombre de ligne de la matrice
 Entrée: int iNbLigne : le nouveau nombre de ligne de la matrice
 Nécessite:	(rien)
 Sortie: (rien)
-Entraîne :	(uiMATNbLigne = uiNbLigne) et
-(les éléments des (uiMATNbLigne - uiNbLigne) dernières lignes on été supprimé)
+Entraîne :	(uiMATNbLigne = iNbLigne) et
+(les éléments des (uiMATNbLigne - iNbLigne) dernières lignes on été supprimé)
 ou
-(les éléments des (uiNbLigne - uiMATNbLigne) lignes on été rajouté en bas de la matrice)
+(les éléments des (iNbLigne - uiMATNbLigne) lignes on été rajouté en bas de la matrice)
 ou
 (Exception dimension_incorrecte levé)
 *********************************************************/
@@ -392,7 +389,7 @@ Modifie le nombre de colonne de la matrice
 Entrée: int iNbColonne : le nouveau nombre de colonne de la matrice
 Nécessite: (rien)
 Sortie: (rien)
-Entraîne : (uiMATNbColonne = uiNbColonne) et
+Entraîne : (uiMATNbColonne = iNbColonne) et
 (les éléments des (uiMATNbColonne - iNbColonne) dernières colonnes on été supprimé)
 ou
 (les éléments des (uiNbColonne - iMATNbColonne) colones on été rajouté à droite de la matrice)
@@ -470,6 +467,7 @@ void CMatrice<MType>::MATModifierNombreColonne(int iNbColonne)
 Modifie l'élément ligne uiIndiceLigne et colonne uiIndiceColonne
 *********************************************************
 Entrée: MType MTypeParam : le nouvelle élément à mettre dans la matrice
+int iIndiceLigne, iIndiceColonne : les indices de l'élément à modifier
 Nécessite: (la matrice doit être du même type que MTypeParam)
 Sortie: (rien)
 Entraîne : *(*(ppMATMatrice + uiIndiceColonne) + uiIndiceLigne) = MTypeParam
@@ -557,11 +555,6 @@ Entraîne : (la matrice est affiché dans la console)
 template <class MType>
 void CMatrice<MType>::MATAfficherMatrice()
 {
-	// Affichage des dimensions de la matrice
-	///utile?
-	//std::cout << "Nombre de colonne de la matrice : " << MATLireNombreColonne() << std::endl;
-	//std::cout << "Nombre de ligne de la matrice : " << MATLireNombreLigne() << std::endl;
-
 	for (unsigned int uiBoucleIndiceLigne = 1; uiBoucleIndiceLigne <= uiMATNbLigne; uiBoucleIndiceLigne++)
 	{
 		std::cout << "| ";
