@@ -114,7 +114,7 @@ CMatrice<double>& CFichier::FICLireFichier()
 		throw(EXCFichier);
 	}
 	
-	// variable utilisé pour léver une execption si le type n'est pas du bon type
+	// variable utilisé pour lever une execption si le type n'est pas du bon type
 	char cTypeTest[] = "double";
 	//cdelim est notre séparateur, Utilisé pour la fonction strtok_s() 	   
 	char cdelim[] = "=";
@@ -193,8 +193,6 @@ CMatrice<double>& CFichier::FICLireFichier()
 			pMATMatrice->MATModifierElement(uiBoucleLigne,uiBoucleColonne, dMatElement);
 		}
 	}
-	//pMATMatrice->MATAfficherMatrice();
 
 	return *pMATMatrice;
-
 }

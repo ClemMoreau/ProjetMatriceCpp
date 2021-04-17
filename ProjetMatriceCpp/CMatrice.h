@@ -557,8 +557,6 @@ Entraîne : (la matrice est affiché dans la console)
 template <class MType>
 void CMatrice<MType>::MATAfficherMatrice()
 {
-	// Affichage des dimensions de la matrice
-	///utile?
 	//std::cout << "Nombre de colonne de la matrice : " << MATLireNombreColonne() << std::endl;
 	//std::cout << "Nombre de ligne de la matrice : " << MATLireNombreLigne() << std::endl;
 
