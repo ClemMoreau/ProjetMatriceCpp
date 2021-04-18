@@ -193,6 +193,6 @@ CMatrice<double>& CFichier::FICLireFichier()
 			pMATMatrice->MATModifierElement(uiBoucleLigne,uiBoucleColonne, dMatElement);
 		}
 	}
-
+	free(pctempNbColonnes); free(pctempType); free(pctempNbLignes);
 	return *pMATMatrice;
-}
+};
