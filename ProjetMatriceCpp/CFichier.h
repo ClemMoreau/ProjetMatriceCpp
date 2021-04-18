@@ -10,7 +10,7 @@
 #include "CException.h"
 
 #define nom_null 301
-#define mauvais_type 302
+#define type_incorrect 302
 #define ouverture_fichier_impossible 303
 
 

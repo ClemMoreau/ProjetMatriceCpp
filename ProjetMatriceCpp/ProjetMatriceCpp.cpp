@@ -81,7 +81,8 @@ int main(int argc, char *argv[])
 	}
 	catch (CException EXCLevee)
 	{
-		cerr << "Divsion par 0 impossible !" << endl << endl;
+		cerr << "L'exception " << EXCLevee.EXClire_valeur() << " a ete levee." << endl;
+		cout << "Divsion par 0 impossible !" << endl << endl;
 	}
 	
 	if (argc == 2)
