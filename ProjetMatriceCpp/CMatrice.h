@@ -295,7 +295,7 @@ template <class MType>
  MType CMatrice<MType>::MATLireElement(int iIndiceLigne, int iIndiceColonne)
 { 
 	 // Vérification indices en paramètre
-	 if (iIndiceLigne < 0 || iIndiceColonne < 0 || iIndiceLigne > int(MATLireNombreLigne()) || iIndiceColonne > int(MATLireNombreColonne()))
+	 if (iIndiceLigne <= 0 || iIndiceColonne <= 0 || iIndiceLigne > int(MATLireNombreLigne()) || iIndiceColonne > int(MATLireNombreColonne()))
 	 {
 		 CException EXCObjet;
 		 EXCObjet.EXCmodifier_valeur(dimension_incorrecte);
@@ -476,7 +476,7 @@ template <class MType>
 void CMatrice<MType>::MATModifierElement(int iIndiceLigne, int iIndiceColonne, MType MTypeParam)
 {
 	// Test sur les indices passés en paramètre : l'élément doit pouvoir être dans le tableau
-	if (iIndiceLigne < 0 || iIndiceLigne < 0 || 
+	if (iIndiceLigne <= 0 || iIndiceLigne <= 0 || 
 		iIndiceLigne > int(MATLireNombreLigne()) || iIndiceColonne > int(MATLireNombreColonne()))
 	{
 		CException EXCObjet;

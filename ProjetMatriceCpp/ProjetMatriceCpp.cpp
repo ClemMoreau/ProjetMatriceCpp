@@ -1,10 +1,37 @@
 #include <iostream>
 #include "CFichier.h"
 
+#include "COperationMatrice.h"
+
 using namespace std;
 
 int main(int argc, char *argv[])
 {
+	CMatrice<int> Matrice(3, 3);
+	int k = 0;
+
+	for (unsigned int i = 1; i <= Matrice.MATLireNombreLigne(); i++)
+		for (unsigned int j = 1; j <= Matrice.MATLireNombreColonne(); j++, k++)
+			Matrice.MATModifierElement(i, j, k);
+
+	cout << "avant " << endl;
+	Matrice.MATAfficherMatrice();
+	cout << "après " << endl;
+	CMatrice<int>* mat = COperationMatrice::OPMExtraireMatriceCarree(Matrice, 2);
+	int i = 0;
+	while (i < 4)
+	{
+		cout << i << endl;
+		mat[i].MATAfficherMatrice();
+		cout << endl;
+		i++;
+	}
+	
+
+
+
+
+
 	/* Fonction principale */
 	
 	CFichier FICFichier;
