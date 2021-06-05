@@ -15,6 +15,7 @@ public :
 
 	template<class MType> static CMatrice<MType>& OPMExtraireMatrice1(CMatrice<MType>& MATMatrice, int iIndiceLigne, int iIndiceColonne, int iNombreLigne, int iNombreColonne);
 
+	template<class MType> static CMatrice<MType>& OPMExtraireMatrice2(CMatrice<MType>& MATMatrice, int iIndiceLigne, int iIndiceColonne, int iNombreLigne, int iNombreColonne);
 	template<class MType> static CMatrice<MType>* OPMExtraireMatriceCarree(CMatrice<MType>& MATMatrice, int iDimension);
 };
 #endif //OPM
@@ -77,6 +78,7 @@ CMatrice<MType>& COperationMatrice::OPMTranspose(CMatrice<MType>& MATMatrice)
 	}
 }
 
+//Question 1
 template <class MType>
 CMatrice<MType>& COperationMatrice::OPMExtraireMatrice1(CMatrice<MType>& MATMatrice, int iIndiceLigne, int iIndiceColonne, int iNombreLigne, int iNombreColonne)
 {
@@ -126,6 +128,64 @@ CMatrice<MType>& COperationMatrice::OPMExtraireMatrice1(CMatrice<MType>& MATMatr
 	return *pMATSousMatrice;
 }
 
+//Question 2
+template <class MType>
+CMatrice<MType>& COperationMatrice::OPMExtraireMatrice2(CMatrice<MType>& MATMatrice, int iIndiceLigne, int iIndiceColonne, int iNombreLigne, int iNombreColonne)
+{
+	//test notre de lignes/colones choisis
+	if (iNombreLigne <= 0 || iNombreColonne <= 0)
+	{
+		CException EXCLevee;
+		EXCLevee.EXCmodifier_valeur(dimension_incorrecte);
+		throw(EXCLevee);
+	}
+
+	// Test si on est bien dans la matrice
+	if (iIndiceLigne <= 0 || iIndiceLigne > int(MATMatrice.MATLireNombreLigne()))
+	{
+		CException EXCLevee;
+		EXCLevee.EXCmodifier_valeur(dimension_incorrecte);
+		throw(EXCLevee);
+	}
+
+
+	if (iIndiceColonne <= 0 || iIndiceColonne > int(MATMatrice.MATLireNombreColonne()))
+	{
+		CException EXCLevee;
+		EXCLevee.EXCmodifier_valeur(dimension_incorrecte);
+		throw(EXCLevee);
+	}
+
+	// on vérifie que la sous matrice ne dépasse pas
+	if ((iIndiceColonne + iNombreColonne - 1) > int(MATMatrice.MATLireNombreColonne()) || (iIndiceLigne + iNombreLigne - 1) > int(MATMatrice.MATLireNombreLigne()))
+	{
+		CException EXCLevee;
+		EXCLevee.EXCmodifier_valeur(dimension_incorrecte);
+		throw(EXCLevee);
+	}
+
+	//condition sur i et j
+	if (iIndiceLigne <= iNombreLigne && iIndiceColonne <= iNombreColonne)
+	{
+		CException EXCLevee;
+		EXCLevee.EXCmodifier_valeur(dimension_incorrecte);
+		throw(EXCLevee);
+	}
+
+	CMatrice<MType>* pMATSousMatrice = new CMatrice<MType>(iNombreLigne, iNombreColonne);
+	int iBoucleLigne = 1;
+	for (int iBoucleIndiceLigne = iIndiceLigne - iNombreLigne; iBoucleIndiceLigne < iIndiceLigne + iNombreLigne; iBoucleIndiceLigne++, iBoucleLigne++)
+	{
+		int iBoucleColonne = 1;
+		for (int iBoucleIndiceColonne = iIndiceColonne - iNombreColonne; iBoucleIndiceColonne < iIndiceColonne + iNombreColonne; iBoucleIndiceColonne++, iBoucleColonne++)
+		{
+			pMATSousMatrice->MATModifierElement(iBoucleLigne, iBoucleColonne, MATMatrice.MATLireElement(iBoucleIndiceLigne, iBoucleIndiceColonne));
+		}
+	}
+	return *pMATSousMatrice;
+}
+
+//Question 3
 template<class MType> 
 CMatrice<MType>* COperationMatrice::OPMExtraireMatriceCarree(CMatrice<MType>& MATMatrice, int iDimension)
 {
