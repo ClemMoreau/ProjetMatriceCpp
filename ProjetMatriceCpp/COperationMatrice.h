@@ -16,6 +16,7 @@ public :
 	template<class MType> static CMatrice<MType>& OPMExtraireMatrice1(CMatrice<MType>& MATMatrice, int iIndiceLigne, int iIndiceColonne, int iNombreLigne, int iNombreColonne);
 
 	template<class MType> static CMatrice<MType>& OPMExtraireMatrice2(CMatrice<MType>& MATMatrice, int iIndiceLigne, int iIndiceColonne, int iNombreLigne, int iNombreColonne);
+	
 	template<class MType> static CMatrice<MType>* OPMExtraireMatriceCarree(CMatrice<MType>& MATMatrice, int iDimension);
 };
 #endif //OPM
@@ -78,7 +79,20 @@ CMatrice<MType>& COperationMatrice::OPMTranspose(CMatrice<MType>& MATMatrice)
 	}
 }
 
-//Question 1
+/*********************************************************
+Extrait une sous-matrice de la matrice passé en paramètre
+*********************************************************
+Entrée: 
+CMatrice<MType>& MATMatrice : la matrice dont on va extraire la sous matrice
+int iIndiceLigne : indice de la ligne de l'élément en haut à gauche de la sous matrice
+int iIndiceColonne : indice de la colonne de l'élément en haut à gauche de la sous matrice
+int iNombreLigne : nombre de ligne de la sous matrice
+int iNombreColonne : nombre de colonne de la sous matrice
+Nécessite: (rien)
+Sortie: CMatrice<MType> : la sous matrice de dimension iNombreLigne*iNombreColonne de la matrice MATMatrice
+Entraîne : (renvoie une sous matrice) ou
+(Exception dimension_incorrecte est levé)
+*********************************************************/
 template <class MType>
 CMatrice<MType>& COperationMatrice::OPMExtraireMatrice1(CMatrice<MType>& MATMatrice, int iIndiceLigne, int iIndiceColonne, int iNombreLigne, int iNombreColonne)
 {
@@ -128,7 +142,20 @@ CMatrice<MType>& COperationMatrice::OPMExtraireMatrice1(CMatrice<MType>& MATMatr
 	return *pMATSousMatrice;
 }
 
-//Question 2
+/*********************************************************
+Extrait une sous-matrice de la matrice passé en paramètre
+*********************************************************
+Entrée:
+CMatrice<MType>& MATMatrice : la matrice dont on va extraire la sous matrice
+int iIndiceLigne : indice de la ligne de l'élément de départ pour créer la sous matrice
+int iIndiceColonne : indice de la colonne de l'élément de départ pour créer la sous matrice
+int iNombreLigne : nombre de ligne de la sous matrice
+int iNombreColonne : nombre de colonne de la sous matrice
+Nécessite: (rien)
+Sortie: CMatrice<MType> : la sous matrice de dimension iNombreLigne*iNombreColonne de la matrice MATMatrice
+Entraîne : (renvoie une sous matrice) ou
+(Exception dimension_incorrecte est levé)
+*********************************************************/
 template <class MType>
 CMatrice<MType>& COperationMatrice::OPMExtraireMatrice2(CMatrice<MType>& MATMatrice, int iIndiceLigne, int iIndiceColonne, int iNombreLigne, int iNombreColonne)
 {
@@ -185,7 +212,18 @@ CMatrice<MType>& COperationMatrice::OPMExtraireMatrice2(CMatrice<MType>& MATMatr
 	return *pMATSousMatrice;
 }
 
-//Question 3
+/*********************************************************
+Extrait une toutes sous-matrice carré de dimension iDimension
+de la matrice passé en paramètre
+*********************************************************
+Entrée:
+CMatrice<MType>& MATMatrice : la matrice dont on va extraire les sous matrice
+int iDimension : la taille des sous matrices carrées à renvoyer
+Nécessite: (rien)
+Sortie: CMatrice<MType>* : la liste des sous matrice carrée de dimension iDimension de la matrice MATMatrice
+Entraîne : (renvoie une liste de sous matrice) ou
+(Exception dimension_incorrecte est levé)
+*********************************************************/
 template<class MType> 
 CMatrice<MType>* COperationMatrice::OPMExtraireMatriceCarree(CMatrice<MType>& MATMatrice, int iDimension)
 {

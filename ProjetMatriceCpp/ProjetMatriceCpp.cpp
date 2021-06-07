@@ -7,7 +7,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-	CMatrice<int> Matrice(3, 3);
+	CMatrice<int> Matrice(6, 7);
 	int k = 0;
 
 	for (unsigned int i = 1; i <= Matrice.MATLireNombreLigne(); i++)
@@ -17,9 +17,10 @@ int main(int argc, char *argv[])
 	cout << "avant " << endl;
 	Matrice.MATAfficherMatrice();
 	cout << "après " << endl;
-	CMatrice<int>* mat = COperationMatrice::OPMExtraireMatriceCarree(Matrice, 2);
+	int j = 2;
+	CMatrice<int>* mat = COperationMatrice::OPMExtraireMatriceCarree(Matrice, j);
 	int i = 0;
-	while (i < 4)
+	while (i < (Matrice.MATLireNombreLigne() - (j-1))*(Matrice.MATLireNombreColonne() -(j-1)))
 	{
 		cout << i << endl;
 		mat[i].MATAfficherMatrice();
