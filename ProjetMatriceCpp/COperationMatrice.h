@@ -159,7 +159,7 @@ Entraîne : (renvoie une sous matrice) ou
 template <class MType>
 CMatrice<MType>& COperationMatrice::OPMExtraireMatrice2(CMatrice<MType>& MATMatrice, int iIndiceLigne, int iIndiceColonne, int iNombreLigne, int iNombreColonne)
 {
-	//test notre de lignes/colones choisis
+	//test si les dimensions sont valides
 	if (iNombreLigne <= 0 || iNombreColonne <= 0)
 	{
 		CException EXCLevee;
@@ -168,6 +168,7 @@ CMatrice<MType>& COperationMatrice::OPMExtraireMatrice2(CMatrice<MType>& MATMatr
 	}
 
 	// Test si on est bien dans la matrice
+	///on regarde si i est dans la matrice
 	if (iIndiceLigne <= 0 || iIndiceLigne > int(MATMatrice.MATLireNombreLigne()))
 	{
 		CException EXCLevee;
@@ -175,7 +176,15 @@ CMatrice<MType>& COperationMatrice::OPMExtraireMatrice2(CMatrice<MType>& MATMatr
 		throw(EXCLevee);
 	}
 
+	///test de n' <= n/2 et m'<=m/2
+	if (iNombreLigne > (int(MATMatrice.MATLireNombreLigne())) / 2 && iNombreColonne > (int(MATMatrice.MATLireNombreColonne())) / 2)
+	{
+		CException EXCLevee;
+		EXCLevee.EXCmodifier_valeur(dimension_incorrecte);
+		throw(EXCLevee);
+	}
 
+	///on regarde si j est dans la matrice
 	if (iIndiceColonne <= 0 || iIndiceColonne > int(MATMatrice.MATLireNombreColonne()))
 	{
 		CException EXCLevee;
@@ -184,6 +193,7 @@ CMatrice<MType>& COperationMatrice::OPMExtraireMatrice2(CMatrice<MType>& MATMatr
 	}
 
 	// on vérifie que la sous matrice ne dépasse pas
+	///i+n' <= n et j+m' <= m
 	if ((iIndiceColonne + iNombreColonne - 1) > int(MATMatrice.MATLireNombreColonne()) || (iIndiceLigne + iNombreLigne - 1) > int(MATMatrice.MATLireNombreLigne()))
 	{
 		CException EXCLevee;
@@ -192,6 +202,7 @@ CMatrice<MType>& COperationMatrice::OPMExtraireMatrice2(CMatrice<MType>& MATMatr
 	}
 
 	//condition sur i et j
+	/// i>= n' et j>=m'
 	if (iIndiceLigne <= iNombreLigne && iIndiceColonne <= iNombreColonne)
 	{
 		CException EXCLevee;
